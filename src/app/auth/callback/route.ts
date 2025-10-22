@@ -42,6 +42,6 @@ export async function GET(request: Request) {
     }
   }
 
-  // Redirect to home page after successful authentication
-  return NextResponse.redirect(new URL("/", request.url));
+  // Redirect to resume builder after successful authentication
+  return NextResponse.redirect(new URL("/resume/create", request.url));
 }

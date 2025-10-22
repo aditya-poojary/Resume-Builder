@@ -11,15 +11,15 @@ export async function middleware(request: NextRequest) {
 
   // Protected routes that require authentication
   const protectedRoutes = [
-    "/dashboard",
     "/resume/create",
+    "/resume/edit",
     "/resume/my-resumes",
   ];
   const isProtectedRoute = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route)
   );
 
-  // Auth routes (login, signup) - redirect to dashboard if already logged in
+  // Auth routes (login, signup) - redirect to resume builder if already logged in
   const authRoutes = ["/login", "/signup"];
   const isAuthRoute = authRoutes.includes(request.nextUrl.pathname);
 
@@ -28,14 +28,14 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // If user is logged in and trying to access auth routes
+  // If user is logged in and trying to access auth routes, redirect to resume builder
   if (user && isAuthRoute) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/resume/create", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/resume/:path*", "/login", "/signup"],
+  matcher: ["/resume/:path*", "/login", "/signup"],
 };

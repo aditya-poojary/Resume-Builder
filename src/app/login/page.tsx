@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/../lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -11,6 +11,26 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check if user is already logged in
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        router.push("/resume/create");
+      }
+    });
+
+    // Listen for auth state changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session) {
+        router.push("/resume/create");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router]);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,8 +56,26 @@ export default function LoginPage() {
           return;
         }
 
-        // User logged in successfully - redirect to home page for now
-        router.push("/");
+        // Create user in database if doesn't exist
+        try {
+          await fetch("/api/user/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: data.user.id,
+              email: data.user.email,
+              name:
+                data.user.user_metadata?.name ||
+                data.user.email?.split("@")[0] ||
+                "User",
+            }),
+          });
+        } catch (dbError) {
+          // Continue anyway - user is authenticated
+        }
+
+        // Use window.location.href for a hard redirect to ensure middleware runs
+        window.location.href = "/resume/create";
       }
     } catch (error: any) {
       setError(error.message || "Failed to login");

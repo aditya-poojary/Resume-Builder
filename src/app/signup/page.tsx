@@ -59,6 +59,22 @@ export default function SignupPage() {
           return;
         }
 
+        // Create user in database
+        try {
+          await fetch("/api/user/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: data.user.id,
+              email: data.user.email,
+              name: name,
+            }),
+          });
+        } catch (dbError) {
+          console.error("Failed to create user in database:", dbError);
+          // Continue anyway - user is created in Supabase
+        }
+
         // If user needs to confirm email
         if (!data.session) {
           setNeedsEmailVerification(true);
@@ -66,7 +82,7 @@ export default function SignupPage() {
           // Auto-confirmed (less likely with Supabase defaults)
           setSuccess(true);
           setTimeout(() => {
-            router.push("/");
+            router.push("/resume/create");
           }, 2000);
         }
       }
@@ -179,7 +195,7 @@ export default function SignupPage() {
             Account Created Successfully!
           </h2>
           <p className="text-gray-600 mb-6">
-            Welcome to ResumeBuilder. Redirecting you to the home page...
+            Welcome to ResumeBuilder. Redirecting you to the resume builder...
           </p>
           <div className="flex justify-center">
             <svg
