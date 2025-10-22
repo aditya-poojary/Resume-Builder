@@ -164,47 +164,144 @@ export default function ResumeCreatePage() {
                   className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-transparent hover:border-blue-500 cursor-pointer"
                   onClick={() => handleTemplateSelect(template.id)}
                 >
-                  {/* Template Preview */}
-                  <div
-                    className="h-80 p-8 flex items-center justify-center relative"
-                    style={{
-                      background: `linear-gradient(135deg, ${template.colors.background} 0%, ${template.colors.primary}10 100%)`,
-                    }}
-                  >
-                    <div className="text-center">
+                  {/* Template Preview - Realistic Resume Document */}
+                  <div className="h-80 p-4 relative overflow-hidden bg-gray-100">
+                    {/* Mini Resume Document */}
+                    <div className="bg-white h-full rounded shadow-2xl overflow-hidden transform group-hover:scale-[1.02] transition-transform duration-300">
+                      {/* Resume Header */}
                       <div
-                        className="w-24 h-24 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-xl"
+                        className="px-4 py-3 text-center"
                         style={{ backgroundColor: template.colors.primary }}
                       >
-                        <svg
-                          className="w-12 h-12 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                          />
-                        </svg>
+                        <div className="text-white font-bold text-sm mb-0.5">
+                          JOHN DOE
+                        </div>
+                        <div className="text-white opacity-90 text-[9px]">
+                          john.doe@email.com | (555) 123-4567
+                        </div>
                       </div>
-                      <div
-                        className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2"
-                        style={{
-                          backgroundColor: `${template.colors.primary}20`,
-                          color: template.colors.primary,
-                        }}
-                      >
-                        {template.category}
+
+                      {/* Resume Content */}
+                      <div className="p-3 space-y-2.5">
+                        {/* Professional Summary */}
+                        <div>
+                          <div
+                            className="text-[10px] font-bold mb-1 pb-0.5 border-b"
+                            style={{
+                              color: template.colors.secondary,
+                              borderColor: template.colors.accent,
+                            }}
+                          >
+                            PROFESSIONAL SUMMARY
+                          </div>
+                          <div className="text-[7px] text-gray-600 leading-tight space-y-0.5">
+                            <div>
+                              Results-driven professional with 5+ years of
+                              experience
+                            </div>
+                            <div>
+                              Proven track record in delivering exceptional
+                              results
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Experience */}
+                        <div>
+                          <div
+                            className="text-[10px] font-bold mb-1 pb-0.5 border-b"
+                            style={{
+                              color: template.colors.secondary,
+                              borderColor: template.colors.accent,
+                            }}
+                          >
+                            WORK EXPERIENCE
+                          </div>
+                          <div className="space-y-1.5">
+                            <div>
+                              <div className="text-[8px] font-semibold text-gray-800">
+                                Senior Developer
+                              </div>
+                              <div className="text-[7px] text-gray-500 mb-0.5">
+                                Tech Company • 2020 - Present
+                              </div>
+                              <div className="text-[7px] text-gray-600 leading-tight">
+                                • Led development of multiple projects
+                              </div>
+                              <div className="text-[7px] text-gray-600 leading-tight">
+                                • Improved system performance by 40%
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Education */}
+                        <div>
+                          <div
+                            className="text-[10px] font-bold mb-1 pb-0.5 border-b"
+                            style={{
+                              color: template.colors.secondary,
+                              borderColor: template.colors.accent,
+                            }}
+                          >
+                            EDUCATION
+                          </div>
+                          <div className="text-[8px] font-semibold text-gray-800">
+                            Bachelor of Science
+                          </div>
+                          <div className="text-[7px] text-gray-500">
+                            University Name • 2016 - 2020
+                          </div>
+                        </div>
+
+                        {/* Skills */}
+                        <div>
+                          <div
+                            className="text-[10px] font-bold mb-1 pb-0.5 border-b"
+                            style={{
+                              color: template.colors.secondary,
+                              borderColor: template.colors.accent,
+                            }}
+                          >
+                            SKILLS
+                          </div>
+                          <div className="flex flex-wrap gap-1">
+                            {["JavaScript", "React", "Node.js", "Python"].map(
+                              (skill, idx) => (
+                                <span
+                                  key={idx}
+                                  className="text-[7px] px-1.5 py-0.5 rounded"
+                                  style={{
+                                    backgroundColor: `${template.colors.primary}15`,
+                                    color: template.colors.secondary,
+                                  }}
+                                >
+                                  {skill}
+                                </span>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Category Badge */}
+                      <div className="absolute top-14 right-2">
+                        <div
+                          className="px-2 py-0.5 rounded-full text-[9px] font-semibold shadow-md"
+                          style={{
+                            backgroundColor: template.colors.accent,
+                            color: "white",
+                          }}
+                        >
+                          {template.category}
+                        </div>
                       </div>
                     </div>
 
                     {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-blue-600 bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                      <button className="opacity-0 group-hover:opacity-100 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transform scale-90 group-hover:scale-100 transition-all duration-300">
-                        Use This Template
+                    <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-6">
+                      <button className="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                        Use This Template →
                       </button>
                     </div>
                   </div>
