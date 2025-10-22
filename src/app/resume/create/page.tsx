@@ -24,6 +24,14 @@ export default function ResumeCreatePage() {
       return;
     }
     setUser(user);
+
+    // IMPORTANT: Sync user to database (fixes foreign key constraint)
+    try {
+      await fetch("/api/user/sync");
+    } catch (error) {
+      // Silent fail - user sync will be retried on save
+    }
+
     setLoading(false);
   };
 
@@ -122,7 +130,8 @@ export default function ResumeCreatePage() {
               </span>
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto font-medium">
-              Each template is a complete resume workspace. Pick one that matches your vibe and start creating!
+              Each template is a complete resume workspace. Pick one that
+              matches your vibe and start creating!
             </p>
           </div>
 
@@ -201,13 +210,16 @@ export default function ResumeCreatePage() {
                           >
                             <div
                               className="w-1 h-3 rounded"
-                              style={{ backgroundColor: template.colors.primary }}
+                              style={{
+                                backgroundColor: template.colors.primary,
+                              }}
                             ></div>
                             ABOUT ME
                           </div>
                           <div className="text-[8px] text-gray-700 leading-relaxed">
-                            Creative professional with 6+ years crafting innovative solutions.
-                            Passionate about design and user experience.
+                            Creative professional with 6+ years crafting
+                            innovative solutions. Passionate about design and
+                            user experience.
                           </div>
                         </div>
 
@@ -222,7 +234,9 @@ export default function ResumeCreatePage() {
                           >
                             <div
                               className="w-1 h-3 rounded"
-                              style={{ backgroundColor: template.colors.primary }}
+                              style={{
+                                backgroundColor: template.colors.primary,
+                              }}
                             ></div>
                             EXPERIENCE
                           </div>
@@ -247,7 +261,9 @@ export default function ResumeCreatePage() {
                               </div>
                               <div className="text-[7px] text-gray-700 space-y-0.5">
                                 <div>• Spearheaded 50+ successful projects</div>
-                                <div>• Increased client satisfaction by 45%</div>
+                                <div>
+                                  • Increased client satisfaction by 45%
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -264,7 +280,9 @@ export default function ResumeCreatePage() {
                           >
                             <div
                               className="w-1 h-3 rounded"
-                              style={{ backgroundColor: template.colors.primary }}
+                              style={{
+                                backgroundColor: template.colors.primary,
+                              }}
                             ></div>
                             SKILLS
                           </div>
@@ -386,7 +404,8 @@ export default function ResumeCreatePage() {
                   Pick Your Style
                 </h4>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  Choose from our three professionally designed templates - each with its own personality
+                  Choose from our three professionally designed templates - each
+                  with its own personality
                 </p>
               </div>
               <div className="text-center group">
@@ -397,7 +416,8 @@ export default function ResumeCreatePage() {
                   Fill In Your Info
                 </h4>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  Use our intuitive editor to add your experience, skills, and achievements
+                  Use our intuitive editor to add your experience, skills, and
+                  achievements
                 </p>
               </div>
               <div className="text-center group">

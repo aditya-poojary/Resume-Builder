@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error saving resume:", error);
     return NextResponse.json(
-      { error: "Failed to save resume" },
+      { error: "Failed to save resume", details: String(error) },
       { status: 500 }
     );
   }

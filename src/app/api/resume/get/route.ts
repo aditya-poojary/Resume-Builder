@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error("Error loading resume:", error);
     return NextResponse.json(
-      { error: "Failed to load resume" },
+      { error: "Failed to load resume", details: String(error) },
       { status: 500 }
     );
   }

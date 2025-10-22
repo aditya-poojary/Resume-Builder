@@ -62,6 +62,13 @@ export default function ResumeEditorPage() {
     }
     setUser(user);
 
+    // IMPORTANT: Sync user to database first (fixes foreign key constraint)
+    try {
+      await fetch("/api/user/sync");
+    } catch (error) {
+      // Silent fail - user sync will be retried on save
+    }
+
     // Set current slot in Redux
     dispatch(setCurrentSlot(slot));
 
@@ -138,7 +145,9 @@ export default function ResumeEditorPage() {
   };
 
   const handleSave = async () => {
-    if (!user || !template) return;
+    if (!user || !template) {
+      return;
+    }
 
     dispatch(setSaving(true));
 
@@ -159,14 +168,18 @@ export default function ResumeEditorPage() {
         }),
       });
 
+      const result = await response.json();
+
       if (response.ok) {
         dispatch(setSaved());
       } else {
-        alert("Failed to save resume");
+        alert("Failed to save resume: " + (result.error || "Unknown error"));
       }
     } catch (error) {
       console.error("Error saving resume:", error);
-      alert("Error saving resume");
+      alert("Error saving resume. Please try again.");
+    } finally {
+      dispatch(setSaving(false));
     }
   };
 

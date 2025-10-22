@@ -71,8 +71,7 @@ export default function SignupPage() {
             }),
           });
         } catch (dbError) {
-          console.error("Failed to create user in database:", dbError);
-          // Continue anyway - user is created in Supabase
+          // Silent fail - user will be synced on first login
         }
 
         // If user needs to confirm email
