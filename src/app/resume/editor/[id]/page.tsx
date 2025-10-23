@@ -9,7 +9,34 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
 // Dynamically import ReactQuill with all modules
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill-new");
+    // Register custom font sizes
+    if (typeof window !== "undefined") {
+      const Quill = (await import("quill")).default;
+      const Size = Quill.import("attributors/style/size") as any;
+      Size.whitelist = [
+        "8px",
+        "9px",
+        "10px",
+        "11px",
+        "12px",
+        "14px",
+        "16px",
+        "18px",
+        "20px",
+        "24px",
+        "28px",
+        "32px",
+        "36px",
+      ];
+      Quill.register(Size, true);
+    }
+    return RQ;
+  },
+  { ssr: false }
+);
 import "react-quill-new/dist/quill.snow.css";
 
 // Default purple and white professional resume template
@@ -105,8 +132,20 @@ export default function VisualResumeEditor() {
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [marginTop, setMarginTop] = useState<number>(20);
+  const [marginBottom, setMarginBottom] = useState<number>(20);
+  const [marginLeft, setMarginLeft] = useState<number>(15);
+  const [marginRight, setMarginRight] = useState<number>(15);
   const saveTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const editorRef = useRef<HTMLDivElement>(null);
+  const quillRef = useRef<any>(null);
+
+  // Callback ref to get Quill instance
+  const setQuillRef = (ref: any) => {
+    if (ref) {
+      quillRef.current = ref;
+    }
+  };
 
   useEffect(() => {
     initializeEditor();
@@ -214,68 +253,33 @@ export default function VisualResumeEditor() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      // Get the actual rendered Quill editor content (with all styles applied)
-      const quillEditor = editorRef.current.querySelector(".ql-editor");
-      if (!quillEditor) {
-        alert("Editor content not found. Please try again.");
-        setIsDownloading(false);
-        return;
-      }
+      // A4 dimensions in mm
+      const a4WidthMm = 210;
+      const a4HeightMm = 297;
+      const pxPerMm = 96 / 25.4; // ≈3.7795 px/mm
 
-      // Clone the editor content
-      const clonedContent = quillEditor.cloneNode(true) as HTMLElement;
-
-      // Create a proper container that matches the editor display
-      const container = document.createElement("div");
-      container.style.position = "fixed";
-      container.style.left = "-9999px";
-      container.style.top = "0";
-      container.style.width = "210mm";
-      container.style.minHeight = "auto";
-      container.style.padding = "20mm 15mm"; // Professional margins
-      container.style.backgroundColor = "#ffffff";
-      container.style.fontFamily = "Arial, Helvetica, sans-serif";
-      container.style.fontSize = "16px"; // Base font size to match editor
-      container.style.lineHeight = "1.6";
-      container.style.color = "#333";
-      container.style.boxSizing = "border-box";
-
-      // Apply Quill's default styles to the cloned content
-      clonedContent.style.padding = "0";
-      clonedContent.style.margin = "0";
-      clonedContent.style.fontSize = "inherit";
-      clonedContent.style.lineHeight = "inherit";
-      clonedContent.style.color = "inherit";
-      clonedContent.style.fontFamily = "inherit";
-
-      // Add the cloned content to container
-      container.appendChild(clonedContent);
-
-      // Append to body
-      document.body.appendChild(container);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      // Get actual content dimensions
-      const actualHeight = container.scrollHeight;
-      const pxPerMm = 96 / 25.4; // ≈3.7795
-      const contentWidth = Math.round(210 * pxPerMm); // A4 width in pixels
-
-      // Render with html2canvas at high quality
-      const canvas = await html2canvas(container, {
+      // Capture the entire editor container
+      const canvas = await html2canvas(editorRef.current, {
         scale: 2.5,
         useCORS: true,
         logging: false,
         backgroundColor: "#ffffff",
-        width: contentWidth,
-        height: actualHeight,
-        windowWidth: contentWidth,
-        windowHeight: actualHeight,
       });
 
-      // Remove container
-      document.body.removeChild(container);
+      // Calculate actual content dimensions
+      const capturedHeightPx = canvas.height / 2.5; // Actual pixel height (unscaled)
+      const capturedWidthPx = canvas.width / 2.5; // Actual pixel width (unscaled)
+      const contentHeightMm = capturedHeightPx / pxPerMm;
+      const contentWidthMm = capturedWidthPx / pxPerMm;
 
-      // Create PDF
+      console.log(
+        `📏 Content: ${contentWidthMm.toFixed(2)}mm × ${contentHeightMm.toFixed(
+          2
+        )}mm`
+      );
+      console.log(`📄 A4 Page: ${a4WidthMm}mm × ${a4HeightMm}mm`);
+
+      // Create PDF (always single page)
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "mm",
@@ -284,66 +288,45 @@ export default function VisualResumeEditor() {
       });
 
       const imgData = canvas.toDataURL("image/jpeg", 0.95);
-      const contentHeightMm = actualHeight / pxPerMm;
-      const a4HeightMm = 297;
 
-      // Add to PDF with proper sizing
-      if (contentHeightMm <= a4HeightMm) {
-        // Fits on one page
-        pdf.addImage(imgData, "JPEG", 0, 0, 210, contentHeightMm);
+      // Calculate if we need to scale down to fit on one page
+      let finalWidth = contentWidthMm;
+      let finalHeight = contentHeightMm;
+
+      if (contentHeightMm > a4HeightMm || contentWidthMm > a4WidthMm) {
+        // Content exceeds page - scale down to fit
+        const scaleHeight = a4HeightMm / contentHeightMm;
+        const scaleWidth = a4WidthMm / contentWidthMm;
+        const scale = Math.min(scaleHeight, scaleWidth); // Use smaller scale to fit both dimensions
+
+        finalWidth = contentWidthMm * scale;
+        finalHeight = contentHeightMm * scale;
+
+        console.log(
+          `⚠️ Content too large! Scaling down by ${(scale * 100).toFixed(1)}%`
+        );
+        console.log(
+          `📐 Final size: ${finalWidth.toFixed(2)}mm × ${finalHeight.toFixed(
+            2
+          )}mm`
+        );
       } else {
-        // Multi-page: Split the content properly
-        let remainingHeight = actualHeight;
-        let currentY = 0;
-        let pageNum = 0;
-
-        const pageHeightPx = Math.round(a4HeightMm * pxPerMm);
-
-        while (remainingHeight > 0) {
-          if (pageNum > 0) {
-            pdf.addPage();
-          }
-
-          const captureHeight = Math.min(pageHeightPx, remainingHeight);
-          const sourceY = currentY;
-          const sourceHeight = captureHeight;
-
-          // Calculate the section of canvas to use
-          const tempCanvas = document.createElement("canvas");
-          tempCanvas.width = canvas.width;
-          tempCanvas.height = (captureHeight / actualHeight) * canvas.height;
-
-          const ctx = tempCanvas.getContext("2d");
-          if (ctx) {
-            ctx.drawImage(
-              canvas,
-              0,
-              (sourceY / actualHeight) * canvas.height,
-              canvas.width,
-              (sourceHeight / actualHeight) * canvas.height,
-              0,
-              0,
-              tempCanvas.width,
-              tempCanvas.height
-            );
-
-            const pageImgData = tempCanvas.toDataURL("image/jpeg", 0.95);
-            const pageHeightMm = captureHeight / pxPerMm;
-            pdf.addImage(pageImgData, "JPEG", 0, 0, 210, pageHeightMm);
-          }
-
-          currentY += captureHeight;
-          remainingHeight -= captureHeight;
-          pageNum++;
-        }
+        console.log("✅ Content fits perfectly on 1 page");
       }
+
+      // Center the content on the page if it's smaller than A4
+      const xOffset = (a4WidthMm - finalWidth) / 2;
+      const yOffset = (a4HeightMm - finalHeight) / 2;
+
+      // Add image to PDF (always one page, scaled to fit)
+      pdf.addImage(imgData, "JPEG", xOffset, yOffset, finalWidth, finalHeight);
 
       const fileName = `Resume_Professional_${new Date()
         .toISOString()
         .slice(0, 10)}.pdf`;
       pdf.save(fileName);
 
-      alert("✅ Resume downloaded successfully!");
+      alert("✅ Resume downloaded successfully as a single-page PDF!");
     } catch (error) {
       console.error("Error generating PDF:", error);
       alert("Failed to generate PDF. Please try again.");
@@ -352,22 +335,11 @@ export default function VisualResumeEditor() {
     }
   };
 
-  // Rich text editor modules with ALL features
+  // Rich text editor modules with custom toolbar
   const modules = {
-    toolbar: [
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      [{ font: [] }],
-      [{ size: ["small", false, "large", "huge"] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ color: [] }, { background: [] }],
-      [{ script: "sub" }, { script: "super" }],
-      [{ align: [] }],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ indent: "-1" }, { indent: "+1" }],
-      ["blockquote", "code-block"],
-      ["link", "image", "video"],
-      ["clean"],
-    ],
+    toolbar: {
+      container: "#toolbar",
+    },
   };
 
   if (loading) {
@@ -479,46 +451,215 @@ export default function VisualResumeEditor() {
 
       {/* Main Editor */}
       <main className="px-6 py-8">
-        <div className="flex justify-center">
-          {/* A4 Page Preview Container */}
-          <div
-            ref={editorRef}
-            className="bg-white shadow-2xl"
-            style={{
-              width: "210mm", // Exact A4 width
-              minHeight: "297mm", // A4 height for reference
-              padding: "20mm 15mm", // Same as PDF margins
-              boxSizing: "border-box",
-              fontSize: "16px", // Same as PDF base font
-              lineHeight: "1.6", // Same as PDF
-              color: "#333",
-              fontFamily: "Arial, Helvetica, sans-serif",
-            }}
-          >
-            <ReactQuill
-              value={content}
-              onChange={handleContentChange}
-              modules={modules}
-              theme="snow"
-              className="h-full"
-              style={{
-                border: "none",
-                fontSize: "16px",
-                fontFamily: "Arial, Helvetica, sans-serif",
-              }}
-            />
+        <div className="max-w-7xl mx-auto">
+          {/* Custom Toolbar - Microsoft Word Style */}
+          <div className="mb-6 bg-white rounded-lg shadow-lg overflow-hidden sticky top-20 z-50">
+            <div
+              id="toolbar"
+              className="ql-toolbar-custom p-3 flex justify-center"
+            >
+              <span className="ql-formats">
+                <select className="ql-header" defaultValue="">
+                  <option value="1">Heading 1</option>
+                  <option value="2">Heading 2</option>
+                  <option value="3">Heading 3</option>
+                  <option value="4">Heading 4</option>
+                  <option value="5">Heading 5</option>
+                  <option value="6">Heading 6</option>
+                  <option value="">Normal</option>
+                </select>
+              </span>
+              <span className="ql-formats">
+                <select className="ql-font"></select>
+              </span>
+              <span className="ql-formats">
+                <button className="ql-bold"></button>
+                <button className="ql-italic"></button>
+                <button className="ql-underline"></button>
+                <button className="ql-strike"></button>
+              </span>
+              <span className="ql-formats">
+                <select className="ql-color"></select>
+                <select className="ql-background"></select>
+              </span>
+              <span className="ql-formats">
+                <button className="ql-script" value="sub"></button>
+                <button className="ql-script" value="super"></button>
+              </span>
+              <span className="ql-formats">
+                <button className="ql-list" value="ordered"></button>
+                <button className="ql-list" value="bullet"></button>
+              </span>
+              <span className="ql-formats">
+                <button className="ql-indent" value="-1"></button>
+                <button className="ql-indent" value="+1"></button>
+              </span>
+              <span className="ql-formats">
+                <select className="ql-align"></select>
+              </span>
+              <span className="ql-formats">
+                <button className="ql-blockquote"></button>
+                <button className="ql-code-block"></button>
+              </span>
+              <span className="ql-formats">
+                <button className="ql-link"></button>
+                <button className="ql-image"></button>
+                <button className="ql-video"></button>
+              </span>
+              <span className="ql-formats">
+                <button className="ql-clean"></button>
+              </span>
+            </div>
           </div>
-        </div>
 
-        <div className="mt-6 text-center text-sm text-gray-600 max-w-4xl mx-auto">
-          <p>
-            💡 <strong>Tip:</strong> The editor above shows exact A4 page size
-            (210mm × 297mm). What you see is what you'll get in the PDF!
-          </p>
-          <p className="mt-2">
-            Use the toolbar to format text, add images, change colors, and more.
-            Auto-saves every 2 seconds.
-          </p>
+          <div className="grid grid-cols-12 gap-8">
+            {/* Margin Controls Sidebar */}
+            <div className="col-span-3 self-start sticky top-20 z-40">
+              <div className="bg-white rounded-lg shadow-lg p-5">
+                <h3 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <span>📏</span>
+                  <span>Page Margins</span>
+                </h3>
+
+                {/* Margin Controls */}
+                <div className="space-y-4">
+                  {/* Top Margin */}
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">
+                      Top: {marginTop}mm
+                    </label>
+                    <input
+                      type="range"
+                      min="5"
+                      max="40"
+                      value={marginTop}
+                      onChange={(e) => setMarginTop(Number(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                  </div>
+
+                  {/* Bottom Margin */}
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">
+                      Bottom: {marginBottom}mm
+                    </label>
+                    <input
+                      type="range"
+                      min="5"
+                      max="40"
+                      value={marginBottom}
+                      onChange={(e) => setMarginBottom(Number(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                  </div>
+
+                  {/* Left Margin */}
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">
+                      Left: {marginLeft}mm
+                    </label>
+                    <input
+                      type="range"
+                      min="5"
+                      max="30"
+                      value={marginLeft}
+                      onChange={(e) => setMarginLeft(Number(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                  </div>
+
+                  {/* Right Margin */}
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">
+                      Right: {marginRight}mm
+                    </label>
+                    <input
+                      type="range"
+                      min="5"
+                      max="30"
+                      value={marginRight}
+                      onChange={(e) => setMarginRight(Number(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                  </div>
+
+                  {/* Reset Button */}
+                  <button
+                    onClick={() => {
+                      setMarginTop(20);
+                      setMarginBottom(20);
+                      setMarginLeft(15);
+                      setMarginRight(15);
+                    }}
+                    className="w-full mt-3 px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 text-sm font-medium transition-colors"
+                  >
+                    Reset Margins
+                  </button>
+                </div>
+
+                <div className="mt-4 p-3 bg-purple-50 rounded-lg">
+                  <p className="text-xs text-purple-700 leading-relaxed">
+                    <strong>💡 Tip:</strong> Adjust margins to control spacing.
+                    Changes apply to both editor and PDF export.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* A4 Page Preview Container */}
+            <div className="col-span-9">
+              <div className="flex justify-center">
+                <div
+                  ref={editorRef}
+                  className="bg-white shadow-2xl"
+                  style={{
+                    width: "210mm",
+                    minHeight: "297mm",
+                    padding: `${marginTop}mm ${marginRight}mm ${marginBottom}mm ${marginLeft}mm`,
+                    boxSizing: "border-box",
+                    fontSize: "16px",
+                    lineHeight: "1.6",
+                    color: "#333",
+                    fontFamily: "Arial, Helvetica, sans-serif",
+                  }}
+                >
+                  <div
+                    ref={(el) => {
+                      if (el) {
+                        const quillInstance = el.querySelector(".ql-editor");
+                        if (quillInstance && !quillRef.current) {
+                          quillRef.current = el;
+                        }
+                      }
+                    }}
+                  >
+                    <ReactQuill
+                      value={content}
+                      onChange={handleContentChange}
+                      modules={modules}
+                      theme="snow"
+                      className="quill-no-toolbar"
+                      style={{
+                        border: "none",
+                        fontSize: "16px",
+                        fontFamily: "Arial, Helvetica, sans-serif",
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 text-center text-sm text-gray-600 max-w-4xl mx-auto">
+            <p>
+              💡 <strong>Tip:</strong> The editor shows exact A4 page size
+              (210mm × 297mm). Use the toolbar above and sidebar to customize!
+            </p>
+            <p className="mt-2">
+              Auto-saves every 2 seconds. Download anytime!
+            </p>
+          </div>
         </div>
       </main>
     </div>
