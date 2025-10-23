@@ -36,8 +36,8 @@ export default function ResumeCreatePage() {
   };
 
   const handleTemplateSelect = (templateId: 1 | 2 | 3) => {
-    // Template ID = Slot ID (merged concept)
-    router.push(`/resume/edit/${templateId}?template=${templateId}`);
+    // Redirect to new visual editor instead of section-based editor
+    router.push(`/resume/editor/${templateId}`);
   };
 
   if (loading) {

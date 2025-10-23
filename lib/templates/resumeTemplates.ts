@@ -38,151 +38,164 @@ export const resumeTemplates: ResumeTemplate[] = [
     },
     defaultSections: {
       header: {
-        title: "Personal Information",
-        content: {
-          ops: [
-            {
-              insert: "JOHN DOE",
-              attributes: { bold: true, size: "huge", color: "#2563EB" },
-            },
-            { insert: "\n" },
-            {
-              insert: "Senior Software Engineer",
-              attributes: { size: "large", color: "#6B7280" },
-            },
-            { insert: "\n\n" },
-          ],
-        },
-        order: 0,
-      },
-      contact: {
-        title: "Contact",
-        content: {
-          ops: [
-            { insert: "📧 Email: ", attributes: { bold: true } },
-            { insert: "johndoe@email.com\n" },
-            { insert: "📱 Phone: ", attributes: { bold: true } },
-            { insert: "+1 (555) 123-4567\n" },
-            { insert: "🌐 Portfolio: ", attributes: { bold: true } },
-            { insert: "www.johndoe.com\n" },
-            { insert: "💼 LinkedIn: ", attributes: { bold: true } },
-            { insert: "linkedin.com/in/johndoe\n" },
-          ],
-        },
-        order: 1,
-      },
-      summary: {
-        title: "Professional Summary",
+        title: "JACQUELINE THOMPSON",
         content: {
           ops: [
             {
               insert:
-                "Experienced software engineer with 5+ years of expertise in full-stack development. Passionate about creating scalable applications and solving complex problems. Proven track record of delivering high-quality solutions in fast-paced environments.\n",
+                "123 Anywhere St., Any City • 123-456-7890 • hello@reallygreatsite.com\nwww.reallygreatsite.com\n",
+            },
+          ],
+        },
+        order: 0,
+      },
+      summary: {
+        title: "SUMMARY",
+        content: {
+          ops: [
+            {
+              insert:
+                "Results-oriented Engineering Executive with a proven track record of optimizing project outcomes. Skilled in strategic project management and team leadership. Seeking a challenging executive role to leverage technical expertise and drive engineering excellence.\n",
+            },
+          ],
+        },
+        order: 1,
+      },
+      experience: {
+        title: "WORK EXPERIENCE",
+        content: {
+          ops: [
+            {
+              insert: "Engineering Executive, Borcelle Technologies",
+              attributes: { bold: true },
+            },
+            {
+              insert:
+                "                                                Jan 2023 - Present\n",
+            },
+            {
+              insert:
+                "• Implemented cost-effective solutions, resulting in a 20% reduction in project expenses.\n",
+            },
+            {
+              insert:
+                "• Streamlined project workflows, enhancing overall efficiency by 25%.\n",
+            },
+            {
+              insert:
+                "• Led a team in successfully delivering a complex engineering project on time and within allocated budget.\n\n",
+            },
+            {
+              insert: "Project Engineer, Salford & Co",
+              attributes: { bold: true },
+            },
+            {
+              insert:
+                "                                                           Mar 2021 - Dec 2022\n",
+            },
+            {
+              insert:
+                "• Managed project timelines, reducing delivery times by 30%.\n",
+            },
+            {
+              insert:
+                "• Spearheaded the adoption of cutting-edge engineering software, improving project accuracy by 15%.\n",
+            },
+            {
+              insert:
+                "• Collaborated with cross-functional teams, enhancing project success rates by 10%.\n\n",
+            },
+            {
+              insert: "Graduate Engineer, Arowwai Industries",
+              attributes: { bold: true },
+            },
+            {
+              insert:
+                "                                                    Feb 2020 - Jan 2021\n",
+            },
+            {
+              insert:
+                "• Coordinated project tasks, ensuring adherence to engineering standards and regulations.\n",
+            },
+            {
+              insert:
+                "• Conducted comprehensive project analyses, identifying and rectifying discrepancies in engineering designs.\n",
             },
           ],
         },
         order: 2,
       },
-      experience: {
-        title: "Professional Experience",
+      education: {
+        title: "EDUCATION",
         content: {
           ops: [
             {
-              insert: "Senior Software Engineer",
-              attributes: { bold: true, size: "large" },
-            },
-            { insert: "\n" },
-            {
-              insert: "Tech Corp Inc.",
-              attributes: { italic: true, color: "#2563EB" },
-            },
-            { insert: " | San Francisco, CA\n" },
-            {
-              insert: "Jan 2022 - Present\n",
-              attributes: { color: "#6B7280" },
-            },
-            { insert: "\n" },
-            {
-              insert:
-                "• Led a team of 5 developers in building a microservices architecture\n",
+              insert: "Master of Science in Mechanical Engineering",
+              attributes: { bold: true },
             },
             {
               insert:
-                "• Improved application performance by 40% through optimization\n",
+                "                                               Sep 2019 - Oct 2020\n",
+            },
+            { insert: "University of Engineering and Technology\n" },
+            { insert: "• Specialization in Advanced Manufacturing.\n" },
+            {
+              insert:
+                '• Thesis on "Innovations in Sustainable Engineering Practices".\n\n',
+            },
+            {
+              insert: "Bachelor of Science in Civil Engineering",
+              attributes: { bold: true },
             },
             {
               insert:
-                "• Implemented CI/CD pipelines reducing deployment time by 60%\n",
+                "                                                   Aug 2015 - Aug 2019\n",
             },
-            { insert: "\n" },
-            {
-              insert: "Software Engineer",
-              attributes: { bold: true, size: "large" },
-            },
-            { insert: "\n" },
-            {
-              insert: "StartUp Solutions",
-              attributes: { italic: true, color: "#2563EB" },
-            },
-            { insert: " | New York, NY\n" },
-            {
-              insert: "Mar 2020 - Dec 2021\n",
-              attributes: { color: "#6B7280" },
-            },
-            { insert: "\n" },
+            { insert: "City College of Engineering\n" },
             {
               insert:
-                "• Developed RESTful APIs serving 100K+ daily active users\n",
-            },
-            {
-              insert:
-                "• Collaborated with cross-functional teams on product features\n",
-            },
-            {
-              insert:
-                "• Mentored junior developers and conducted code reviews\n",
+                "• Relevant coursework in Structural Design and Project Management.\n",
             },
           ],
         },
         order: 3,
       },
-      education: {
-        title: "Education",
+      additional: {
+        title: "ADDITIONAL INFORMATION",
         content: {
           ops: [
             {
-              insert: "Bachelor of Science in Computer Science",
-              attributes: { bold: true, size: "large" },
+              insert: "Technical Skills: ",
+              attributes: { bold: true },
             },
-            { insert: "\n" },
             {
-              insert: "University of Technology",
-              attributes: { italic: true, color: "#2563EB" },
+              insert:
+                "Project Management, Structural Analysis, Robotics and Automation, CAD\n",
             },
-            { insert: " | Boston, MA\n" },
             {
-              insert: "2016 - 2020 | GPA: 3.8/4.0\n",
-              attributes: { color: "#6B7280" },
+              insert: "Languages: ",
+              attributes: { bold: true },
+            },
+            { insert: "English, Malay, German\n" },
+            {
+              insert: "Certifications: ",
+              attributes: { bold: true },
+            },
+            {
+              insert:
+                "Professional Engineer (PE) License, Project Management Professional (PMP)\n",
+            },
+            {
+              insert: "Awards/Activities: ",
+              attributes: { bold: true },
+            },
+            {
+              insert:
+                'Received the "Engineering Excellence" Award for outstanding contributions to project innovation, Borcelle Technologies\n',
             },
           ],
         },
         order: 4,
-      },
-      skills: {
-        title: "Skills & Technologies",
-        content: {
-          ops: [
-            { insert: "Programming Languages:\n", attributes: { bold: true } },
-            { insert: "JavaScript, TypeScript, Python, Java, Go\n\n" },
-            { insert: "Frontend:\n", attributes: { bold: true } },
-            { insert: "React, Next.js, Vue.js, Tailwind CSS, Redux\n\n" },
-            { insert: "Backend:\n", attributes: { bold: true } },
-            { insert: "Node.js, Express, Django, PostgreSQL, MongoDB\n\n" },
-            { insert: "DevOps:\n", attributes: { bold: true } },
-            { insert: "Docker, Kubernetes, AWS, CI/CD, Git\n" },
-          ],
-        },
-        order: 5,
       },
     },
   },
