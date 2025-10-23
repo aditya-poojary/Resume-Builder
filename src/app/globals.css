@@ -24,3 +24,71 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Visual Resume Editor - A4 Page Styling */
+.ql-container {
+  border: none !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  color: #333 !important;
+}
+
+.ql-editor {
+  padding: 0 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  color: #333 !important;
+  min-height: 297mm;
+}
+
+/* Keep toolbar styling clean */
+.ql-toolbar {
+  border: none !important;
+  border-bottom: 2px solid #e5e7eb !important;
+  background: #f9fafb !important;
+  padding: 12px !important;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Ensure proper spacing in lists */
+.ql-editor ul,
+.ql-editor ol {
+  padding-left: 1.5em;
+}
+
+.ql-editor li {
+  margin-bottom: 0.25em;
+}
+
+/* Headings styling to match resume */
+.ql-editor h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin: 0.5em 0;
+}
+
+.ql-editor h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 0.75em 0 0.5em 0;
+}
+
+.ql-editor h3 {
+  font-size: 1.25em;
+  font-weight: 700;
+  margin: 0.5em 0;
+}
+
+/* Paragraph spacing */
+.ql-editor p {
+  margin: 0.5em 0;
+}
+
+/* Strong/bold text */
+.ql-editor strong {
+  font-weight: 700;
+}

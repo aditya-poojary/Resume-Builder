@@ -214,25 +214,53 @@ export default function VisualResumeEditor() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      // Create a clean container for PDF
+      // Get the actual rendered Quill editor content (with all styles applied)
+      const quillEditor = editorRef.current.querySelector(".ql-editor");
+      if (!quillEditor) {
+        alert("Editor content not found. Please try again.");
+        setIsDownloading(false);
+        return;
+      }
+
+      // Clone the editor content
+      const clonedContent = quillEditor.cloneNode(true) as HTMLElement;
+
+      // Create a proper container that matches the editor display
       const container = document.createElement("div");
-      container.innerHTML = content;
       container.style.position = "fixed";
       container.style.left = "-9999px";
       container.style.top = "0";
       container.style.width = "210mm";
-      container.style.padding = "15mm 10mm";
+      container.style.minHeight = "auto";
+      container.style.padding = "20mm 15mm"; // Professional margins
       container.style.backgroundColor = "#ffffff";
       container.style.fontFamily = "Arial, Helvetica, sans-serif";
+      container.style.fontSize = "16px"; // Base font size to match editor
+      container.style.lineHeight = "1.6";
+      container.style.color = "#333";
+      container.style.boxSizing = "border-box";
 
+      // Apply Quill's default styles to the cloned content
+      clonedContent.style.padding = "0";
+      clonedContent.style.margin = "0";
+      clonedContent.style.fontSize = "inherit";
+      clonedContent.style.lineHeight = "inherit";
+      clonedContent.style.color = "inherit";
+      clonedContent.style.fontFamily = "inherit";
+
+      // Add the cloned content to container
+      container.appendChild(clonedContent);
+
+      // Append to body
       document.body.appendChild(container);
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-      // Get actual content height
+      // Get actual content dimensions
       const actualHeight = container.scrollHeight;
-      const contentWidth = 794; // A4 width at 96 DPI
+      const pxPerMm = 96 / 25.4; // ≈3.7795
+      const contentWidth = Math.round(210 * pxPerMm); // A4 width in pixels
 
-      // Render with html2canvas
+      // Render with html2canvas at high quality
       const canvas = await html2canvas(container, {
         scale: 2.5,
         useCORS: true,
@@ -244,6 +272,7 @@ export default function VisualResumeEditor() {
         windowHeight: actualHeight,
       });
 
+      // Remove container
       document.body.removeChild(container);
 
       // Create PDF
@@ -255,19 +284,58 @@ export default function VisualResumeEditor() {
       });
 
       const imgData = canvas.toDataURL("image/jpeg", 0.95);
-      const pxPerMm = 96 / 25.4;
       const contentHeightMm = actualHeight / pxPerMm;
       const a4HeightMm = 297;
 
-      // Add to PDF (single or multi-page)
+      // Add to PDF with proper sizing
       if (contentHeightMm <= a4HeightMm) {
+        // Fits on one page
         pdf.addImage(imgData, "JPEG", 0, 0, 210, contentHeightMm);
       } else {
-        // Multi-page support
-        const scaleFactor = a4HeightMm / contentHeightMm;
-        const scaledWidth = 210 * scaleFactor;
-        const xOffset = (210 - scaledWidth) / 2;
-        pdf.addImage(imgData, "JPEG", xOffset, 0, scaledWidth, a4HeightMm);
+        // Multi-page: Split the content properly
+        let remainingHeight = actualHeight;
+        let currentY = 0;
+        let pageNum = 0;
+
+        const pageHeightPx = Math.round(a4HeightMm * pxPerMm);
+
+        while (remainingHeight > 0) {
+          if (pageNum > 0) {
+            pdf.addPage();
+          }
+
+          const captureHeight = Math.min(pageHeightPx, remainingHeight);
+          const sourceY = currentY;
+          const sourceHeight = captureHeight;
+
+          // Calculate the section of canvas to use
+          const tempCanvas = document.createElement("canvas");
+          tempCanvas.width = canvas.width;
+          tempCanvas.height = (captureHeight / actualHeight) * canvas.height;
+
+          const ctx = tempCanvas.getContext("2d");
+          if (ctx) {
+            ctx.drawImage(
+              canvas,
+              0,
+              (sourceY / actualHeight) * canvas.height,
+              canvas.width,
+              (sourceHeight / actualHeight) * canvas.height,
+              0,
+              0,
+              tempCanvas.width,
+              tempCanvas.height
+            );
+
+            const pageImgData = tempCanvas.toDataURL("image/jpeg", 0.95);
+            const pageHeightMm = captureHeight / pxPerMm;
+            pdf.addImage(pageImgData, "JPEG", 0, 0, 210, pageHeightMm);
+          }
+
+          currentY += captureHeight;
+          remainingHeight -= captureHeight;
+          pageNum++;
+        }
       }
 
       const fileName = `Resume_Professional_${new Date()
@@ -411,11 +479,21 @@ export default function VisualResumeEditor() {
 
       {/* Main Editor */}
       <main className="px-6 py-8">
-        <div className="max-w-5xl mx-auto">
+        <div className="flex justify-center">
+          {/* A4 Page Preview Container */}
           <div
             ref={editorRef}
-            className="bg-white shadow-2xl rounded-lg overflow-hidden"
-            style={{ minHeight: "800px" }}
+            className="bg-white shadow-2xl"
+            style={{
+              width: "210mm", // Exact A4 width
+              minHeight: "297mm", // A4 height for reference
+              padding: "20mm 15mm", // Same as PDF margins
+              boxSizing: "border-box",
+              fontSize: "16px", // Same as PDF base font
+              lineHeight: "1.6", // Same as PDF
+              color: "#333",
+              fontFamily: "Arial, Helvetica, sans-serif",
+            }}
           >
             <ReactQuill
               value={content}
@@ -423,20 +501,24 @@ export default function VisualResumeEditor() {
               modules={modules}
               theme="snow"
               className="h-full"
-              style={{ minHeight: "800px" }}
+              style={{
+                border: "none",
+                fontSize: "16px",
+                fontFamily: "Arial, Helvetica, sans-serif",
+              }}
             />
           </div>
+        </div>
 
-          <div className="mt-6 text-center text-sm text-gray-600">
-            <p>
-              💡 <strong>Tip:</strong> This is a full document editor. Edit
-              anywhere in the resume! Auto-saves every 2 seconds.
-            </p>
-            <p className="mt-2">
-              Use the toolbar above to format text, add images, change colors,
-              and more.
-            </p>
-          </div>
+        <div className="mt-6 text-center text-sm text-gray-600 max-w-4xl mx-auto">
+          <p>
+            💡 <strong>Tip:</strong> The editor above shows exact A4 page size
+            (210mm × 297mm). What you see is what you'll get in the PDF!
+          </p>
+          <p className="mt-2">
+            Use the toolbar to format text, add images, change colors, and more.
+            Auto-saves every 2 seconds.
+          </p>
         </div>
       </main>
     </div>
