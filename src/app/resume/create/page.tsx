@@ -53,9 +53,9 @@ export default function ResumeCreatePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-700 font-medium">Loading your workspace...</p>
         </div>
       </div>
@@ -63,12 +63,12 @@ export default function ResumeCreatePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
       {/* Decorative Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
 
       {/* Header */}
@@ -79,8 +79,8 @@ export default function ResumeCreatePage() {
             className="flex items-center space-x-3 hover:opacity-80 transition-opacity group"
           >
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl blur opacity-75 group-hover:opacity-100 transition"></div>
-              <div className="relative w-12 h-12 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl blur opacity-75 group-hover:opacity-100 transition"></div>
+              <div className="relative w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
                 <svg
                   className="w-7 h-7 text-white"
                   fill="none"
@@ -97,7 +97,7 @@ export default function ResumeCreatePage() {
               </div>
             </div>
             <div>
-              <span className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
                 ResumeBuilder
               </span>
               <p className="text-xs text-gray-500 font-medium -mt-1">
@@ -107,7 +107,7 @@ export default function ResumeCreatePage() {
           </Link>
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-md">
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-bold text-sm">
                 {user.email?.charAt(0).toUpperCase()}
               </div>
               <span className="text-sm font-semibold text-gray-700">
@@ -116,7 +116,7 @@ export default function ResumeCreatePage() {
             </div>
             <Link
               href="/"
-              className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-indigo-600 transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-blue-600 transition-colors"
             >
               Home
             </Link>
@@ -149,19 +149,19 @@ export default function ResumeCreatePage() {
           {/* Hero Section */}
           <div className="text-center mb-16">
             <div className="inline-block mb-4">
-              <span className="px-4 py-1.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-bold rounded-full shadow-lg">
-                ✨ THREE UNIQUE STYLES
+              <span className="px-4 py-1.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-xs font-bold rounded-full shadow-lg">
+                ✨ THREE PROFESSIONAL TEMPLATES
               </span>
             </div>
             <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-4 leading-tight">
               Choose Your
-              <span className="block bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
                 Resume Style
               </span>
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto font-medium">
-              Each template is a complete resume workspace. Pick one that
-              matches your vibe and start creating!
+              Each template is professionally designed and fully customizable.
+              Pick the one that best represents you!
             </p>
           </div>
 
@@ -208,136 +208,358 @@ export default function ResumeCreatePage() {
 
                     {/* Mini Resume Document */}
                     <div className="relative bg-white h-full rounded-xl shadow-2xl overflow-hidden transform group-hover:scale-[1.03] transition-transform duration-500 border">
-                      {/* Resume Header */}
-                      <div
-                        className="px-4 py-4 text-center relative overflow-hidden"
-                        style={{
-                          background: `linear-gradient(135deg, ${template.colors.primary}, ${template.colors.secondary})`,
-                        }}
-                      >
-                        <div className="absolute inset-0 bg-white opacity-10"></div>
-                        <div className="relative text-white font-black text-base tracking-wider mb-1">
-                          ALEX MORGAN
-                        </div>
-                        <div className="relative text-white/90 text-[10px] font-medium">
-                          alex.morgan@email.com • +1 (555) 987-6543
-                        </div>
-                        <div className="relative text-white/80 text-[9px] mt-1">
-                          San Francisco, CA • linkedin.com/in/alexmorgan
-                        </div>
-                      </div>
-
-                      {/* Resume Body */}
-                      <div className="p-4 space-y-3">
-                        {/* About */}
-                        <div>
+                      {/* Template 1: Engineering Executive - Aditya Poojary */}
+                      {template.id === 1 && (
+                        <>
+                          {/* Header */}
                           <div
-                            className="text-[11px] font-black mb-1.5 pb-1 border-b-2 tracking-wide flex items-center gap-1"
+                            className="px-4 py-4 text-center relative overflow-hidden"
                             style={{
-                              color: template.colors.secondary,
-                              borderColor: template.colors.accent,
+                              background: `linear-gradient(135deg, ${template.colors.primary}, ${template.colors.secondary})`,
                             }}
                           >
-                            <div
-                              className="w-1 h-3 rounded"
-                              style={{
-                                backgroundColor: template.colors.primary,
-                              }}
-                            ></div>
-                            ABOUT ME
+                            <div className="absolute inset-0 bg-white opacity-10"></div>
+                            <div className="relative text-white font-black text-base tracking-wider mb-1">
+                              ADITYA POOJARY
+                            </div>
+                            <div className="relative text-white/90 text-[9px] font-medium">
+                              123 Anywhere St., Any City, ST 12345
+                            </div>
+                            <div className="relative text-white/80 text-[8px] mt-1">
+                              123-456-7890 • hello@reallygreatsite.com
+                            </div>
                           </div>
-                          <div className="text-[8px] text-gray-700 leading-relaxed">
-                            Creative professional with 6+ years crafting
-                            innovative solutions. Passionate about design and
-                            user experience.
-                          </div>
-                        </div>
 
-                        {/* Experience */}
-                        <div>
-                          <div
-                            className="text-[11px] font-black mb-1.5 pb-1 border-b-2 tracking-wide flex items-center gap-1"
-                            style={{
-                              color: template.colors.secondary,
-                              borderColor: template.colors.accent,
-                            }}
-                          >
-                            <div
-                              className="w-1 h-3 rounded"
-                              style={{
-                                backgroundColor: template.colors.primary,
-                              }}
-                            ></div>
-                            EXPERIENCE
-                          </div>
-                          <div className="space-y-2">
+                          {/* Body */}
+                          <div className="p-4 space-y-2.5">
+                            {/* Professional Summary */}
                             <div>
-                              <div className="flex justify-between items-start mb-0.5">
-                                <div className="text-[9px] font-bold text-gray-900">
-                                  Lead Designer
-                                </div>
+                              <div
+                                className="text-[10px] font-black mb-1 pb-0.5 border-b-2 tracking-wide flex items-center gap-1"
+                                style={{
+                                  color: template.colors.secondary,
+                                  borderColor: template.colors.accent,
+                                }}
+                              >
                                 <div
-                                  className="text-[7px] font-semibold px-1.5 py-0.5 rounded"
+                                  className="w-1 h-2.5 rounded"
                                   style={{
-                                    backgroundColor: `${template.colors.primary}15`,
-                                    color: template.colors.secondary,
+                                    backgroundColor: template.colors.primary,
                                   }}
-                                >
-                                  2021-Now
-                                </div>
+                                ></div>
+                                PROFESSIONAL SUMMARY
                               </div>
-                              <div className="text-[8px] text-gray-600 mb-1">
-                                Creative Studio Inc.
+                              <div className="text-[7px] text-gray-700 leading-relaxed">
+                                Engineering Executive with extensive experience in strategic planning, team leadership, and project management. Proven track record of delivering complex engineering projects.
                               </div>
-                              <div className="text-[7px] text-gray-700 space-y-0.5">
-                                <div>• Spearheaded 50+ successful projects</div>
+                            </div>
+
+                            {/* Work Experience */}
+                            <div>
+                              <div
+                                className="text-[10px] font-black mb-1 pb-0.5 border-b-2 tracking-wide flex items-center gap-1"
+                                style={{
+                                  color: template.colors.secondary,
+                                  borderColor: template.colors.accent,
+                                }}
+                              >
+                                <div
+                                  className="w-1 h-2.5 rounded"
+                                  style={{
+                                    backgroundColor: template.colors.primary,
+                                  }}
+                                ></div>
+                                WORK EXPERIENCE
+                              </div>
+                              <div className="space-y-1.5">
                                 <div>
-                                  • Increased client satisfaction by 45%
+                                  <div className="flex justify-between items-start mb-0.5">
+                                    <div className="text-[8px] font-bold text-gray-900">
+                                      Engineering Executive
+                                    </div>
+                                    <div
+                                      className="text-[6px] font-semibold px-1.5 py-0.5 rounded"
+                                      style={{
+                                        backgroundColor: `${template.colors.primary}15`,
+                                        color: template.colors.secondary,
+                                      }}
+                                    >
+                                      Jan 2025-Present
+                                    </div>
+                                  </div>
+                                  <div className="text-[7px] text-gray-600 mb-0.5 italic">
+                                    Borcelle Technologies
+                                  </div>
+                                  <div className="text-[6.5px] text-gray-700 leading-tight space-y-0.5">
+                                    <div>• Lead 50+ engineering professionals</div>
+                                    <div>• 30% efficiency improvement</div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
 
-                        {/* Skills */}
-                        <div>
-                          <div
-                            className="text-[11px] font-black mb-1.5 pb-1 border-b-2 tracking-wide flex items-center gap-1"
-                            style={{
-                              color: template.colors.secondary,
-                              borderColor: template.colors.accent,
-                            }}
-                          >
-                            <div
-                              className="w-1 h-3 rounded"
-                              style={{
-                                backgroundColor: template.colors.primary,
-                              }}
-                            ></div>
-                            SKILLS
-                          </div>
-                          <div className="flex flex-wrap gap-1">
-                            {[
-                              "Figma",
-                              "Adobe XD",
-                              "React",
-                              "TypeScript",
-                              "UI/UX",
-                            ].map((skill, idx) => (
-                              <span
-                                key={idx}
-                                className="text-[8px] px-2 py-0.5 rounded-full font-semibold"
+                            {/* Skills */}
+                            <div>
+                              <div
+                                className="text-[10px] font-black mb-1 pb-0.5 border-b-2 tracking-wide flex items-center gap-1"
                                 style={{
-                                  backgroundColor: `${template.colors.primary}20`,
                                   color: template.colors.secondary,
+                                  borderColor: template.colors.accent,
                                 }}
                               >
-                                {skill}
-                              </span>
-                            ))}
+                                <div
+                                  className="w-1 h-2.5 rounded"
+                                  style={{
+                                    backgroundColor: template.colors.primary,
+                                  }}
+                                ></div>
+                                SKILLS
+                              </div>
+                              <div className="flex flex-wrap gap-1">
+                                {["AutoCAD", "Python", "Six Sigma", "PMP"].map((skill, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="text-[7px] px-1.5 py-0.5 rounded-full font-semibold"
+                                    style={{
+                                      backgroundColor: `${template.colors.primary}20`,
+                                      color: template.colors.secondary,
+                                    }}
+                                  >
+                                    {skill}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
+                        </>
+                      )}
+
+                      {/* Template 2: Content Writer - Jonathan Patterson */}
+                      {template.id === 2 && (
+                        <>
+                          {/* Header */}
+                          <div
+                            className="px-4 py-4 text-center relative overflow-hidden"
+                            style={{
+                              background: `linear-gradient(135deg, ${template.colors.primary}, ${template.colors.secondary})`,
+                            }}
+                          >
+                            <div className="absolute inset-0 bg-white opacity-10"></div>
+                            <div className="relative text-white font-black text-base tracking-wider mb-1">
+                              JONATHAN PATTERSON
+                            </div>
+                            <div className="relative text-white/90 text-[9px] font-medium">
+                              123 Anywhere St., Any City, ST 12345
+                            </div>
+                            <div className="relative text-white/80 text-[8px] mt-1">
+                              +123-456-7890 • hello@reallygreatsite.com
+                            </div>
+                          </div>
+
+                          {/* Body */}
+                          <div className="p-4 space-y-2.5">
+                            {/* Summary */}
+                            <div>
+                              <div
+                                className="text-[10px] font-black mb-1 pb-0.5 border-b-2 tracking-wide flex items-center gap-1"
+                                style={{
+                                  color: template.colors.secondary,
+                                  borderColor: template.colors.accent,
+                                }}
+                              >
+                                <div
+                                  className="w-1 h-2.5 rounded"
+                                  style={{
+                                    backgroundColor: template.colors.primary,
+                                  }}
+                                ></div>
+                                SUMMARY
+                              </div>
+                              <div className="text-[7px] text-gray-700 leading-relaxed">
+                                Content writer with 3 years of experience crafting compelling and creative content that engages and informs audiences. Versatile writing style with strong research and editing skills.
+                              </div>
+                            </div>
+
+                            {/* Work Experience */}
+                            <div>
+                              <div
+                                className="text-[10px] font-black mb-1 pb-0.5 border-b-2 tracking-wide flex items-center gap-1"
+                                style={{
+                                  color: template.colors.secondary,
+                                  borderColor: template.colors.accent,
+                                }}
+                              >
+                                <div
+                                  className="w-1 h-2.5 rounded"
+                                  style={{
+                                    backgroundColor: template.colors.primary,
+                                  }}
+                                ></div>
+                                WORK EXPERIENCE
+                              </div>
+                              <div className="space-y-1.5">
+                                <div>
+                                  <div className="flex justify-between items-start mb-0.5">
+                                    <div className="text-[8px] font-bold text-gray-900">
+                                      Content Writer
+                                    </div>
+                                    <div
+                                      className="text-[6px] font-semibold px-1.5 py-0.5 rounded"
+                                      style={{
+                                        backgroundColor: `${template.colors.primary}15`,
+                                        color: template.colors.secondary,
+                                      }}
+                                    >
+                                      2019-Present
+                                    </div>
+                                  </div>
+                                  <div className="text-[7px] text-gray-600 mb-0.5 italic">
+                                    Giggling Platypus Co.
+                                  </div>
+                                  <div className="text-[6.5px] text-gray-700 leading-tight space-y-0.5">
+                                    <div>• Write articles & blog posts for tech clients</div>
+                                    <div>• Utilize SEO techniques for optimization</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Professional Skills */}
+                            <div>
+                              <div
+                                className="text-[10px] font-black mb-1 pb-0.5 border-b-2 tracking-wide flex items-center gap-1"
+                                style={{
+                                  color: template.colors.secondary,
+                                  borderColor: template.colors.accent,
+                                }}
+                              >
+                                <div
+                                  className="w-1 h-2.5 rounded"
+                                  style={{
+                                    backgroundColor: template.colors.primary,
+                                  }}
+                                ></div>
+                                SKILLS
+                              </div>
+                              <div className="flex flex-wrap gap-1">
+                                {[
+                                  "SEO",
+                                  "Copywriting",
+                                  "Research",
+                                  "Editing",
+                                ].map((skill, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="text-[7px] px-1.5 py-0.5 rounded-full font-semibold"
+                                    style={{
+                                      backgroundColor: `${template.colors.primary}20`,
+                                      color: template.colors.secondary,
+                                    }}
+                                  >
+                                    {skill}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      {/* Template 3: Web Developer - Eleanor Fitzgerald */}
+                      {template.id === 3 && (
+                        <>
+                          {/* Header - Different style for Web Developer */}
+                          <div
+                            className="px-4 py-4 relative border-b-4"
+                            style={{ borderColor: template.colors.primary }}
+                          >
+                            <div className="text-center">
+                              <div
+                                className="font-black text-base tracking-wider mb-1"
+                                style={{ color: template.colors.primary }}
+                              >
+                                ELEANOR FITZGERALD
+                              </div>
+                              <div className="text-[9px] font-semibold text-gray-600">
+                                Web Developer
+                              </div>
+                              <div className="text-[7px] text-gray-500 mt-1">
+                                123 Anywhere St., Any City, ST 12345
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Body */}
+                          <div className="p-4 space-y-2.5">
+                            {/* Career Summary */}
+                            <div>
+                              <div
+                                className="text-[10px] font-black mb-1 pb-0.5 border-b-2 tracking-wide"
+                                style={{
+                                  color: template.colors.primary,
+                                  borderColor: template.colors.accent,
+                                }}
+                              >
+                                CAREER SUMMARY
+                              </div>
+                              <div className="text-[7px] text-gray-700 leading-relaxed">
+                                Solution-oriented problem solver with 5 years of experience building and maintaining software. Highly skilled in communication, collaboration, and technical documentation.
+                              </div>
+                            </div>
+
+                            {/* Work Experience */}
+                            <div>
+                              <div
+                                className="text-[10px] font-black mb-1 pb-0.5 border-b-2 tracking-wide"
+                                style={{
+                                  color: template.colors.primary,
+                                  borderColor: template.colors.accent,
+                                }}
+                              >
+                                WORK EXPERIENCE
+                              </div>
+                              <div className="space-y-1.5">
+                                <div>
+                                  <div className="text-[8px] font-bold text-gray-900 mb-0.5">
+                                    Web Developer
+                                  </div>
+                                  <div
+                                    className="text-[7px] font-semibold mb-0.5"
+                                    style={{ color: template.colors.primary }}
+                                  >
+                                    Wardiere Inc.
+                                  </div>
+                                  <div className="text-[6px] text-gray-600 mb-0.5 italic">
+                                    Feb 2029 - Present
+                                  </div>
+                                  <div className="text-[6.5px] text-gray-700 leading-tight space-y-0.5">
+                                    <div>• Build & maintain documentation sites</div>
+                                    <div>• Collaborate with developers on features</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Skills */}
+                            <div>
+                              <div
+                                className="text-[10px] font-black mb-1 pb-0.5 border-b-2 tracking-wide"
+                                style={{
+                                  color: template.colors.primary,
+                                  borderColor: template.colors.accent,
+                                }}
+                              >
+                                SKILLS
+                              </div>
+                              <div className="text-[6.5px] text-gray-700 leading-relaxed">
+                                <span className="font-bold">Technical:</span> Front-end & back-end development
+                                <br />
+                                <span className="font-bold">Other:</span> Documentation • Client communication
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
 
                     {/* Category Badge */}
@@ -427,7 +649,7 @@ export default function ResumeCreatePage() {
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center group">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg group-hover:scale-110 transition-transform">
                   1
                 </div>
                 <h4 className="font-black text-lg text-gray-900 mb-2">
@@ -439,7 +661,7 @@ export default function ResumeCreatePage() {
                 </p>
               </div>
               <div className="text-center group">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg group-hover:scale-110 transition-transform">
                   2
                 </div>
                 <h4 className="font-black text-lg text-gray-900 mb-2">
@@ -451,7 +673,7 @@ export default function ResumeCreatePage() {
                 </p>
               </div>
               <div className="text-center group">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-pink-500 to-indigo-500 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-700 to-blue-800 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg group-hover:scale-110 transition-transform">
                   3
                 </div>
                 <h4 className="font-black text-lg text-gray-900 mb-2">
@@ -470,7 +692,7 @@ export default function ResumeCreatePage() {
       <div className="fixed bottom-8 right-8 z-50">
         <Link
           href="/"
-          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full shadow-2xl hover:shadow-indigo-500/50 font-bold text-sm transform hover:scale-105 transition-all"
+          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full shadow-2xl hover:shadow-blue-500/50 font-bold text-sm transform hover:scale-105 transition-all"
         >
           <svg
             className="w-5 h-5"
