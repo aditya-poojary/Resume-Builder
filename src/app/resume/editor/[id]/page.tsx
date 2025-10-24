@@ -90,8 +90,7 @@ const DEFAULT_TEMPLATE1 = `
 `;
 
 // Template 2: Content Writer (Jonathan Patterson)
-const DEFAULT_TEMPLATE2 = `
-<div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #333;">
+const DEFAULT_TEMPLATE2 = `<div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #333;">
   <!-- Header Section -->
   <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 3px solid #6b46c1;">
     <h1 style="font-size: 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #6b46c1; margin: 0 0 10px 0;">Jonathan Patterson</h1>
@@ -476,10 +475,13 @@ export default function VisualResumeEditor() {
 
   // Set initial content when component mounts or content changes from database
   useEffect(() => {
-    if (contentEditableRef.current && content) {
-      contentEditableRef.current.innerHTML = content;
+    if (contentEditableRef.current && content && !loading) {
+      // Only update if content is different to avoid cursor jumping
+      if (contentEditableRef.current.innerHTML !== content) {
+        contentEditableRef.current.innerHTML = content;
+      }
     }
-  }, [loading]); // Only update when loading state changes (after data is fetched)
+  }, [content, loading]); // Update when content or loading changes
 
   const initializeEditor = async () => {
     // Check authentication
