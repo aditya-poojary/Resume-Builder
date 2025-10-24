@@ -202,144 +202,198 @@ export const resumeTemplates: ResumeTemplate[] = [
 
   {
     id: 2,
-    name: "Creative Designer",
-    description: "Vibrant and creative design for designers and artists",
-    category: "Creative",
-    thumbnail: "/templates/creative-designer.svg",
+    name: "Purple Professional",
+    description:
+      "Modern purple and white professional resume with elegant design",
+    category: "Professional",
+    thumbnail: "/templates/purple-professional.svg",
     colors: {
-      primary: "#8B5CF6", // Purple
-      secondary: "#A78BFA",
-      accent: "#C4B5FD",
-      text: "#1F2937",
-      textLight: "#6B7280",
+      primary: "#6b46c1", // Purple
+      secondary: "#8b5cf6",
+      accent: "#c4b5fd",
+      text: "#333333",
+      textLight: "#555555",
       background: "#FFFFFF",
     },
     defaultSections: {
       header: {
-        title: "Personal Information",
-        content: {
-          ops: [
-            {
-              insert: "CREATIVE NAME",
-              attributes: { bold: true, size: "huge", color: "#8B5CF6" },
-            },
-            { insert: "\n" },
-            {
-              insert: "UI/UX Designer & Visual Artist",
-              attributes: { size: "large", color: "#6B7280", italic: true },
-            },
-            { insert: "\n\n" },
-          ],
-        },
-        order: 0,
-      },
-      contact: {
-        title: "Let's Connect",
-        content: {
-          ops: [
-            { insert: "✉️ ", attributes: { color: "#8B5CF6" } },
-            { insert: "creative@designer.com\n" },
-            { insert: "📞 ", attributes: { color: "#8B5CF6" } },
-            { insert: "+1 (555) 987-6543\n" },
-            { insert: "🎨 ", attributes: { color: "#8B5CF6" } },
-            { insert: "behance.net/creative\n" },
-            { insert: "📸 ", attributes: { color: "#8B5CF6" } },
-            { insert: "instagram.com/creative\n" },
-          ],
-        },
-        order: 1,
-      },
-      about: {
-        title: "About Me",
+        title: "JACQUELINE THOMPSON",
         content: {
           ops: [
             {
               insert:
-                "Creative and passionate designer with a keen eye for detail and aesthetics. Specialized in creating intuitive user experiences and stunning visual designs. Committed to pushing creative boundaries and delivering exceptional results.\n",
+                "123 Anywhere St., Any City, ST 12345 | 123-456-7890 | hello@reallygreatsite.com | www.reallygreatsite.com\n",
+            },
+          ],
+        },
+        order: 0,
+      },
+      summary: {
+        title: "PROFESSIONAL SUMMARY",
+        content: {
+          ops: [
+            {
+              insert:
+                "Engineering Executive with extensive experience in strategic planning, team leadership, and project management. Proven track record of delivering complex engineering projects on time and within budget while maintaining the highest quality standards.\n",
+            },
+          ],
+        },
+        order: 1,
+      },
+      experience: {
+        title: "WORK EXPERIENCE",
+        content: {
+          ops: [
+            {
+              insert: "Engineering Executive",
+              attributes: { bold: true },
+            },
+            { insert: "\n" },
+            {
+              insert: "Borcelle Technologies | January 2025 - Present",
+              attributes: { italic: true },
+            },
+            { insert: "\n" },
+            {
+              insert:
+                "• Lead cross-functional engineering teams of 50+ professionals across multiple projects\n",
+            },
+            {
+              insert:
+                "• Develop and implement strategic engineering initiatives resulting in 30% efficiency improvement\n",
+            },
+            {
+              insert:
+                "• Oversee $10M+ annual engineering budget and resource allocation\n\n",
+            },
+            {
+              insert: "Senior Engineering Manager",
+              attributes: { bold: true },
+            },
+            { insert: "\n" },
+            {
+              insert: "Salford & Co | June 2020 - December 2024",
+              attributes: { italic: true },
+            },
+            { insert: "\n" },
+            {
+              insert:
+                "• Managed engineering department with 25 team members delivering critical infrastructure projects\n",
+            },
+            {
+              insert:
+                "• Implemented agile methodologies increasing project delivery speed by 40%\n",
+            },
+            {
+              insert:
+                "• Reduced operational costs by 25% through process optimization\n\n",
+            },
+            {
+              insert: "Engineering Team Lead",
+              attributes: { bold: true },
+            },
+            { insert: "\n" },
+            {
+              insert: "Arowwai Industries | March 2015 - May 2020",
+              attributes: { italic: true },
+            },
+            { insert: "\n" },
+            {
+              insert:
+                "• Led team of 10 engineers in designing and implementing automated systems\n",
+            },
+            {
+              insert:
+                "• Achieved 99.5% project success rate with zero safety incidents\n",
+            },
+            {
+              insert:
+                "• Mentored junior engineers and established training programs\n",
             },
           ],
         },
         order: 2,
       },
-      experience: {
-        title: "Work Experience",
+      education: {
+        title: "EDUCATION",
         content: {
           ops: [
             {
-              insert: "Senior UI/UX Designer",
-              attributes: { bold: true, size: "large", color: "#8B5CF6" },
-            },
-            { insert: "\n" },
-            { insert: "Design Studio Pro", attributes: { italic: true } },
-            { insert: " • Los Angeles, CA\n" },
-            { insert: "2022 - Present\n", attributes: { color: "#6B7280" } },
-            { insert: "\n" },
-            { insert: "🎯 Led design for 15+ successful product launches\n" },
-            { insert: "🎯 Created design system used by 50+ team members\n" },
-            {
-              insert: "🎯 Increased user engagement by 65% through redesign\n",
+              insert: "Master of Science in Mechanical Engineering",
+              attributes: { bold: true },
             },
             { insert: "\n" },
             {
-              insert: "UI/UX Designer",
-              attributes: { bold: true, size: "large", color: "#8B5CF6" },
+              insert: "Stanford University | 2013 - 2015",
+              attributes: { italic: true },
             },
-            { insert: "\n" },
-            { insert: "Creative Agency", attributes: { italic: true } },
-            { insert: " • San Diego, CA\n" },
-            { insert: "2020 - 2022\n", attributes: { color: "#6B7280" } },
-            { insert: "\n" },
-            { insert: "🎯 Designed mobile apps with 4.8+ star ratings\n" },
+            { insert: "\n\n" },
             {
-              insert:
-                "🎯 Collaborated with clients on brand identity projects\n",
+              insert: "Bachelor of Science in Civil Engineering",
+              attributes: { bold: true },
             },
+            { insert: "\n" },
+            {
+              insert: "University of California, Berkeley | 2009 - 2013",
+              attributes: { italic: true },
+            },
+            { insert: "\n" },
           ],
         },
         order: 3,
       },
-      education: {
-        title: "Education",
+      skills: {
+        title: "SKILLS & TECHNOLOGIES",
         content: {
           ops: [
             {
-              insert: "Bachelor of Fine Arts in Graphic Design",
-              attributes: { bold: true, size: "large" },
+              insert: "Technical: ",
+              attributes: { bold: true },
             },
-            { insert: "\n" },
             {
-              insert: "Art Institute",
-              attributes: { italic: true, color: "#8B5CF6" },
+              insert:
+                "AutoCAD, SolidWorks, MATLAB, Python, Project Management Software, Six Sigma, Lean Manufacturing\n",
             },
-            { insert: " • Los Angeles, CA\n" },
-            { insert: "2016 - 2020\n", attributes: { color: "#6B7280" } },
+            {
+              insert: "Leadership: ",
+              attributes: { bold: true },
+            },
+            {
+              insert:
+                "Strategic Planning, Team Building, Budget Management, Stakeholder Communication, Risk Management\n",
+            },
           ],
         },
         order: 4,
       },
-      skills: {
-        title: "Design Skills",
+      additional: {
+        title: "ADDITIONAL INFORMATION",
         content: {
           ops: [
             {
-              insert: "Design Tools:\n",
-              attributes: { bold: true, color: "#8B5CF6" },
+              insert: "Languages: ",
+              attributes: { bold: true },
             },
             {
-              insert: "Figma • Adobe XD • Sketch • Photoshop • Illustrator\n\n",
+              insert:
+                "English (Native), Spanish (Fluent), Mandarin (Conversational)\n",
             },
             {
-              insert: "Specializations:\n",
-              attributes: { bold: true, color: "#8B5CF6" },
+              insert: "Certifications: ",
+              attributes: { bold: true },
             },
             {
-              insert: "UI Design • UX Research • Prototyping • Wireframing\n\n",
+              insert:
+                "PMP, Six Sigma Black Belt, Professional Engineer (PE) License\n",
             },
             {
-              insert: "Additional:\n",
-              attributes: { bold: true, color: "#8B5CF6" },
+              insert: "Awards: ",
+              attributes: { bold: true },
             },
-            { insert: "HTML/CSS • Animation • Branding • Typography\n" },
+            {
+              insert:
+                "Engineering Excellence Award 2023, Innovation Leader of the Year 2021\n",
+            },
           ],
         },
         order: 5,

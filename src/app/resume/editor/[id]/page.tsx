@@ -39,12 +39,12 @@ const ReactQuill = dynamic(
 );
 import "react-quill-new/dist/quill.snow.css";
 
-// Default purple and white professional resume template
-const DEFAULT_TEMPLATE = `
+// Template 1: Engineering Executive (Aditya Poojary)
+const DEFAULT_TEMPLATE1 = `
 <div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #333;">
   <!-- Header Section -->
   <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 3px solid #6b46c1;">
-    <h1 style="font-size: 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #6b46c1; margin: 0 0 10px 0;">JACQUELINE THOMPSON</h1>
+    <h1 style="font-size: 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #6b46c1; margin: 0 0 10px 0;">Aditya Poojary</h1>
     <p style="font-size: 11px; color: #555; margin: 5px 0;">123 Anywhere St., Any City, ST 12345 | 123-456-7890 | hello@reallygreatsite.com | www.reallygreatsite.com</p>
   </div>
 
@@ -121,12 +121,262 @@ const DEFAULT_TEMPLATE = `
 </div>
 `;
 
+// Template 2: Content Writer (Jonathan Patterson)
+const DEFAULT_TEMPLATE2 = `
+<div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #333;">
+  <!-- Header Section -->
+  <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 3px solid #6b46c1;">
+    <h1 style="font-size: 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #6b46c1; margin: 0 0 10px 0;">Jonathan Patterson</h1>
+    <p style="font-size: 11px; color: #555; margin: 5px 0;">
+      123 Anywhere St., Any City, ST 12345 | +123-456-7890 | hello@reallygreatsite.com | @reallygreatsite
+    </p>
+  </div>
+
+  <!-- Professional Summary -->
+  <div style="margin-bottom: 20px;">
+    <h2 style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: #6b46c1; border-bottom: 2px solid #6b46c1; padding-bottom: 3px; margin-bottom: 10px;">SUMMARY</h2>
+    <p style="font-size: 11px; margin: 0;">
+      As a content writer with 3 years of experience, I have a passion for crafting compelling and creative content that engages and informs audiences. My writing style is versatile, with experience across tones from conversational to formal, and I bring strong research, fact-checking, and editing skills to deliver accurate, audience-focused copy on tight deadlines.
+    </p>
+  </div>
+
+  <!-- Work Experience -->
+  <div style="margin-bottom: 20px;">
+    <h2 style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: #6b46c1; border-bottom: 2px solid #6b46c1; padding-bottom: 3px; margin-bottom: 10px;">WORK EXPERIENCE</h2>
+
+    <div style="margin-bottom: 15px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">Content Writer</h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0 0 5px 0;">Giggling Platypus Co. | 2019 - Present</p>
+      <ul style="margin: 5px 0; padding-left: 20px; font-size: 11px;">
+        <li>Write and edit articles, blog posts, and social media updates for a variety of clients in tech, business, and lifestyle niches.</li>
+        <li>Conduct research on topics to provide well-informed insights and engaging content.</li>
+        <li>Collaborate with clients, editors, and designers to meet objectives and brand voice.</li>
+        <li>Utilize SEO techniques and tools to optimize content for search engines and user engagement.</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">Copywriter</h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0 0 5px 0;">Thynk Unlimited | 2017 - 2019</p>
+      <ul style="margin: 5px 0; padding-left: 20px; font-size: 11px;">
+        <li>Created and edited marketing copy for print and digital media including brochures, websites, and email campaigns.</li>
+        <li>Conducted market research to identify target audiences and develop resonant messaging.</li>
+        <li>Proofread and edited copy for accuracy, grammar, and brand consistency.</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">Content Specialist</h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0 0 5px 0;">Studio Shodwe | 2015 - 2017</p>
+      <ul style="margin: 5px 0; padding-left: 20px; font-size: 11px;">
+        <li>Created and edited marketing copy for print and digital media, ensuring client requirements were met.</li>
+        <li>Conducted market research to define target audiences and messaging strategies.</li>
+        <li>Worked closely with clients and account managers to align content with campaign goals.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Education & Certifications -->
+  <div style="margin-bottom: 20px;">
+    <h2 style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: #6b46c1; border-bottom: 2px solid #6b46c1; padding-bottom: 3px; margin-bottom: 10px;">EDUCATION &amp; CERTIFICATION</h2>
+
+    <div style="margin-bottom: 10px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">Bachelor of Arts in English</h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0;">Ginyard International University | 2019 - 2022</p>
+    </div>
+
+    <div style="margin-bottom: 6px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">Content Marketing Certification</h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0;">Borcelle Academy | 2019</p>
+    </div>
+
+    <div style="margin-top: 6px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">SEO Fundamentals Certification</h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0;">Fradel and Spies Academy | 2017</p>
+    </div>
+  </div>
+
+  <!-- Professional Skills -->
+  <div style="margin-bottom: 20px;">
+    <h2 style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: #6b46c1; border-bottom: 2px solid #6b46c1; padding-bottom: 3px; margin-bottom: 10px;">PROFESSIONAL SKILLS</h2>
+    <p style="font-size: 11px; margin: 0;"><strong>Technical:</strong> SEO knowledge and related tools, content management systems, proficiency in content strategy and optimization.</p>
+    <p style="font-size: 11px; margin: 5px 0 0 0;"><strong>Writing:</strong> Strong writing and editing skills, fact-checking, research, creative copywriting for multiple formats.</p>
+    <p style="font-size: 11px; margin: 5px 0 0 0;"><strong>Soft Skills:</strong> Time-management, collaboration with cross-functional teams, creativity and innovation.</p>
+  </div>
+
+  <!-- Additional Information -->
+  <div style="margin-bottom: 20px;">
+    <h2 style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: #6b46c1; border-bottom: 2px solid #6b46c1; padding-bottom: 3px; margin-bottom: 10px;">ADDITIONAL INFORMATION</h2>
+    <p style="font-size: 11px; margin: 0;"><strong>Sample Achievements:</strong> Developed and implemented a content marketing strategy that increased website traffic and engagement; managed a content library ensuring accuracy and consistency.</p>
+    <p style="font-size: 11px; margin: 5px 0 0 0;"><strong>Notable Roles:</strong> Produced technical content and user manuals, conducted SME interviews, collaborated with product teams for clear communications.</p>
+  </div>
+</div>
+`;
+
+// Template 3: Web Developer (Eleanor Fitzgerald)
+const DEFAULT_TEMPLATE3 = `
+<div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #333;">
+  <!-- Header Section -->
+  <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 3px solid #2b6cb0;">
+    <h1 style="font-size: 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #2b6cb0; margin: 0 0 10px 0;">
+      ELEANOR FITZGERALD
+    </h1>
+    <p style="font-size: 11px; color: #555; margin: 5px 0;">
+      Web Developer • 123 Anywhere St., Any City, ST 12345 | +123-456-7890 | hello@reallygreatsite.com
+    </p>
+  </div>
+
+  <!-- Professional / Career Summary -->
+  <div style="margin-bottom: 20px;">
+    <h2 style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: #2b6cb0; border-bottom: 2px solid #2b6cb0; padding-bottom: 3px; margin-bottom: 10px;">
+      CAREER SUMMARY
+    </h2>
+    <p style="font-size: 11px; margin: 0;">
+      Solution-oriented and problem solver with 5 years of experience building and maintaining software and software architecture. Highly skilled in communication, collaboration, and technical documentation.
+    </p>
+  </div>
+
+  <!-- Work Experience -->
+  <div style="margin-bottom: 20px;">
+    <h2 style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: #2b6cb0; border-bottom: 2px solid #2b6cb0; padding-bottom: 3px; margin-bottom: 10px;">
+      WORK EXPERIENCE
+    </h2>
+
+    <!-- Wardiere Inc. -->
+    <div style="margin-bottom: 15px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">
+        Wardiere Inc.
+      </h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0 0 5px 0;">
+        Web Developer | 04 February, 2029 - Present
+      </p>
+      <ul style="margin: 5px 0; padding-left: 20px; font-size: 11px;">
+        <li>Ensure user satisfaction and retention by providing responsive tech support.</li>
+        <li>Build and maintain software documentation sites using various programming languages.</li>
+        <li>Increase productivity by using software to organize, track bug patches and add feature requests.</li>
+        <li>Collaborate with other developers to update the website and create new features.</li>
+      </ul>
+    </div>
+
+    <!-- Paucek and Lage -->
+    <div style="margin-bottom: 15px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">
+        Paucek and Lage
+      </h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0 0 5px 0;">
+        Junior Web Developer | 05 October, 2026 - 20 December, 2028
+      </p>
+      <ul style="margin: 5px 0; padding-left: 20px; font-size: 11px;">
+        <li>Built and maintained websites for clients through various online platforms.</li>
+        <li>Assisted troubleshooting software and created/tested applications for websites.</li>
+        <li>Filed reports, gathered information, and performed research.</li>
+      </ul>
+    </div>
+
+    <!-- Warner & Spencer (project) -->
+    <div style="margin-bottom: 15px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">
+        Warner &amp; Spencer (Project)
+      </h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0 0 5px 0;">
+        (Date not specified in PDF)
+      </p>
+      <ul style="margin: 5px 0; padding-left: 20px; font-size: 11px;">
+        <li>Built an e-commerce website to showcase the skincare products of Warner &amp; Spencer.</li>
+        <li>Integrated an email marketing software to increase subscribers and promote products.</li>
+      </ul>
+    </div>
+
+    <!-- Timmerman Industries (project) -->
+    <div style="margin-bottom: 15px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">
+        Timmerman Industries (Project)
+      </h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0 0 5px 0;">
+        (Date not specified in PDF)
+      </p>
+      <ul style="margin: 5px 0; padding-left: 20px; font-size: 11px;">
+        <li>Created a membership site to create, manage, track subscriptions, and sell digital products.</li>
+        <li>Made a customizable checkout process to ensure smooth customer purchases.</li>
+      </ul>
+    </div>
+
+    <!-- Freelance entries -->
+    <div style="margin-bottom: 15px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">
+        Freelance Web Developer
+      </h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0 0 5px 0;">
+        16 September, 2025 - 17 November, 2025; 13 March, 2024 - 14 May, 2024
+      </p>
+      <ul style="margin: 5px 0; padding-left: 20px; font-size: 11px;">
+        <li>Delivered client websites and small web applications on short timelines.</li>
+        <li>Coordinated requirements and implemented features to client specifications.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Education -->
+  <div style="margin-bottom: 20px;">
+    <h2 style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: #2b6cb0; border-bottom: 2px solid #2b6cb0; padding-bottom: 3px; margin-bottom: 10px;">
+      EDUCATION
+    </h2>
+
+    <div style="margin-bottom: 10px;">
+      <h3 style="font-size: 12px; font-weight: 700; margin: 0 0 3px 0; color: #000;">
+        Bachelor of Computer Science - Software Engineering
+      </h3>
+      <p style="font-size: 10px; font-style: italic; color: #666; margin: 0;">
+        2022 - 2026 | Really Great University
+      </p>
+      <p style="font-size: 11px; margin: 6px 0 0 0;">
+        Relevant coursework: Front-end and back-end web development, Code structure and architecture, Web performance optimization, Programming languages
+      </p>
+    </div>
+  </div>
+
+  <!-- Skills -->
+  <div style="margin-bottom: 20px;">
+    <h2 style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: #2b6cb0; border-bottom: 2px solid #2b6cb0; padding-bottom: 3px; margin-bottom: 10px;">
+      SKILLS
+    </h2>
+
+    <p style="font-size: 11px; margin: 0;"><strong>Technical:</strong> Front-end & back-end web development, web performance optimization, programming languages, code structure & architecture.</p>
+    <p style="font-size: 11px; margin: 5px 0 0 0;"><strong>Other:</strong> Documentation, debugging, client communication, project coordination.</p>
+  </div>
+
+  <!-- Projects / Extras -->
+  <div style="margin-bottom: 20px;">
+    <h2 style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: #2b6cb0; border-bottom: 2px solid #2b6cb0; padding-bottom: 3px; margin-bottom: 10px;">
+      RELEVANT PROJECTS
+    </h2>
+    <p style="font-size: 11px; margin: 0;">
+      (Projects listed above under company/project sections: Warner &amp; Spencer — e-commerce, Timmerman Industries — membership & checkout.)
+    </p>
+  </div>
+</div>
+`;
+
 export default function VisualResumeEditor() {
   const params = useParams();
   const router = useRouter();
   const slot = parseInt(params?.id as string) as 1 | 2 | 3;
 
-  const [content, setContent] = useState<string>(DEFAULT_TEMPLATE);
+  // Select template based on slot
+  const getDefaultTemplate = () => {
+    switch (slot) {
+      case 1:
+        return DEFAULT_TEMPLATE1;
+      case 2:
+        return DEFAULT_TEMPLATE2;
+      case 3:
+        return DEFAULT_TEMPLATE3;
+      default:
+        return DEFAULT_TEMPLATE1;
+    }
+  };
+
+  const [content, setContent] = useState<string>(getDefaultTemplate());
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -183,15 +433,22 @@ export default function VisualResumeEditor() {
       const data = await response.json();
 
       if (data.resume && data.resume.htmlContent) {
-        // Load existing HTML content
+        // Load existing HTML content from database
+        console.log(`✅ Loaded existing resume from database for slot ${slot}`);
         setContent(data.resume.htmlContent);
       } else {
-        // Use default template
-        setContent(DEFAULT_TEMPLATE);
+        // No data in database - show appropriate default template based on slot
+        // User can edit and save it manually
+        console.log(
+          `ℹ️ No data in database for slot ${slot}, showing default template (not saving yet)`
+        );
+
+        // Load the appropriate template for this slot
+        setContent(getDefaultTemplate());
       }
     } catch (error) {
       console.error("Error loading resume:", error);
-      setContent(DEFAULT_TEMPLATE);
+      setContent(getDefaultTemplate());
     }
   };
 
