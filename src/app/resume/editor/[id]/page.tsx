@@ -3,41 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { supabase } from "@/../lib/supabase";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-
-// Dynamically import ReactQuill with all modules
-const ReactQuill = dynamic(
-  async () => {
-    const { default: RQ } = await import("react-quill-new");
-    // Register custom font sizes
-    if (typeof window !== "undefined") {
-      const Quill = (await import("quill")).default;
-      const Size = Quill.import("attributors/style/size") as any;
-      Size.whitelist = [
-        "8px",
-        "9px",
-        "10px",
-        "11px",
-        "12px",
-        "14px",
-        "16px",
-        "18px",
-        "20px",
-        "24px",
-        "28px",
-        "32px",
-        "36px",
-      ];
-      Quill.register(Size, true);
-    }
-    return RQ;
-  },
-  { ssr: false }
-);
-import "react-quill-new/dist/quill.snow.css";
 
 // Template 1: Engineering Executive (Aditya Poojary)
 const DEFAULT_TEMPLATE1 = `
@@ -388,18 +356,111 @@ export default function VisualResumeEditor() {
   const [marginRight, setMarginRight] = useState<number>(15);
   const saveTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const editorRef = useRef<HTMLDivElement>(null);
-  const quillRef = useRef<any>(null);
+  const contentEditableRef = useRef<HTMLDivElement>(null);
 
-  // Callback ref to get Quill instance
-  const setQuillRef = (ref: any) => {
-    if (ref) {
-      quillRef.current = ref;
+  // Custom toolbar command execution
+  const executeCommand = (
+    command: string,
+    value: string | undefined = undefined
+  ) => {
+    document.execCommand(command, false, value);
+    contentEditableRef.current?.focus();
+  };
+
+  // Toolbar button handlers
+  const handleBold = () => executeCommand("bold");
+  const handleItalic = () => executeCommand("italic");
+  const handleUnderline = () => executeCommand("underline");
+  const handleStrikeThrough = () => executeCommand("strikeThrough");
+
+  const handleHeading = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    if (value) {
+      executeCommand("formatBlock", value);
+    } else {
+      executeCommand("formatBlock", "p");
     }
+  };
+
+  const handleFontSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    executeCommand("fontSize", "7"); // Base size
+    // Wrap selection in span with custom size
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const span = document.createElement("span");
+      span.style.fontSize = value;
+      range.surroundContents(span);
+    }
+  };
+
+  const handleFontName = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    executeCommand("fontName", e.target.value);
+  };
+
+  const handleTextColor = (e: React.ChangeEvent<HTMLInputElement>) => {
+    executeCommand("foreColor", e.target.value);
+  };
+
+  const handleBackgroundColor = (e: React.ChangeEvent<HTMLInputElement>) => {
+    executeCommand("backColor", e.target.value);
+  };
+
+  const handleAlign = (align: string) => {
+    switch (align) {
+      case "left":
+        executeCommand("justifyLeft");
+        break;
+      case "center":
+        executeCommand("justifyCenter");
+        break;
+      case "right":
+        executeCommand("justifyRight");
+        break;
+      case "justify":
+        executeCommand("justifyFull");
+        break;
+    }
+  };
+
+  const handleList = (type: "ordered" | "bullet") => {
+    if (type === "ordered") {
+      executeCommand("insertOrderedList");
+    } else {
+      executeCommand("insertUnorderedList");
+    }
+  };
+
+  const handleIndent = (direction: "in" | "out") => {
+    if (direction === "in") {
+      executeCommand("indent");
+    } else {
+      executeCommand("outdent");
+    }
+  };
+
+  const handleLink = () => {
+    const url = prompt("Enter URL:");
+    if (url) {
+      executeCommand("createLink", url);
+    }
+  };
+
+  const handleRemoveFormat = () => {
+    executeCommand("removeFormat");
   };
 
   useEffect(() => {
     initializeEditor();
   }, []);
+
+  // Set initial content when component mounts or content changes from database
+  useEffect(() => {
+    if (contentEditableRef.current && content) {
+      contentEditableRef.current.innerHTML = content;
+    }
+  }, [loading]); // Only update when loading state changes (after data is fetched)
 
   const initializeEditor = async () => {
     // Check authentication
@@ -452,16 +513,19 @@ export default function VisualResumeEditor() {
     }
   };
 
-  const handleContentChange = (value: string) => {
-    setContent(value);
+  const handleContentChange = () => {
+    if (contentEditableRef.current) {
+      const newContent = contentEditableRef.current.innerHTML;
+      setContent(newContent);
 
-    // Debounce auto-save
-    if (saveTimerRef.current) {
-      clearTimeout(saveTimerRef.current);
+      // Debounce auto-save
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+      }
+      saveTimerRef.current = setTimeout(() => {
+        handleSave(newContent);
+      }, 2000); // Auto-save after 2 seconds
     }
-    saveTimerRef.current = setTimeout(() => {
-      handleSave(value);
-    }, 2000); // Auto-save after 2 seconds
   };
 
   const handleSave = async (contentToSave?: string) => {
@@ -592,11 +656,20 @@ export default function VisualResumeEditor() {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      // Redirect to home page
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Error logging out:", error);
+      alert("Failed to logout. Please try again.");
+    }
+  };
+
   // Rich text editor modules with custom toolbar
   const modules = {
-    toolbar: {
-      container: "#toolbar",
-    },
+    toolbar: "#toolbar",
   };
 
   if (loading) {
@@ -702,6 +775,25 @@ export default function VisualResumeEditor() {
                 </>
               )}
             </button>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center gap-2"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
+              </svg>
+              Logout
+            </button>
           </div>
         </div>
       </header>
@@ -709,63 +801,194 @@ export default function VisualResumeEditor() {
       {/* Main Editor */}
       <main className="px-6 py-8">
         <div className="max-w-7xl mx-auto">
-          {/* Custom Toolbar - Microsoft Word Style */}
-          <div className="mb-6 bg-white rounded-lg shadow-lg overflow-hidden sticky top-20 z-50">
-            <div
-              id="toolbar"
-              className="ql-toolbar-custom p-3 flex justify-center"
-            >
-              <span className="ql-formats">
-                <select className="ql-header" defaultValue="">
-                  <option value="1">Heading 1</option>
-                  <option value="2">Heading 2</option>
-                  <option value="3">Heading 3</option>
-                  <option value="4">Heading 4</option>
-                  <option value="5">Heading 5</option>
-                  <option value="6">Heading 6</option>
-                  <option value="">Normal</option>
-                </select>
-              </span>
-              <span className="ql-formats">
-                <select className="ql-font"></select>
-              </span>
-              <span className="ql-formats">
-                <button className="ql-bold"></button>
-                <button className="ql-italic"></button>
-                <button className="ql-underline"></button>
-                <button className="ql-strike"></button>
-              </span>
-              <span className="ql-formats">
-                <select className="ql-color"></select>
-                <select className="ql-background"></select>
-              </span>
-              <span className="ql-formats">
-                <button className="ql-script" value="sub"></button>
-                <button className="ql-script" value="super"></button>
-              </span>
-              <span className="ql-formats">
-                <button className="ql-list" value="ordered"></button>
-                <button className="ql-list" value="bullet"></button>
-              </span>
-              <span className="ql-formats">
-                <button className="ql-indent" value="-1"></button>
-                <button className="ql-indent" value="+1"></button>
-              </span>
-              <span className="ql-formats">
-                <select className="ql-align"></select>
-              </span>
-              <span className="ql-formats">
-                <button className="ql-blockquote"></button>
-                <button className="ql-code-block"></button>
-              </span>
-              <span className="ql-formats">
-                <button className="ql-link"></button>
-                <button className="ql-image"></button>
-                <button className="ql-video"></button>
-              </span>
-              <span className="ql-formats">
-                <button className="ql-clean"></button>
-              </span>
+          {/* Custom Toolbar - Full Functionality */}
+          <div className="mb-6 bg-white rounded-lg shadow-lg overflow-visible sticky top-20 z-50">
+            <div className="p-3 flex flex-wrap gap-2 items-center border-b border-gray-200">
+              {/* Heading Selector */}
+              <select
+                onChange={handleHeading}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                defaultValue=""
+              >
+                <option value="">Normal</option>
+                <option value="h1">Heading 1</option>
+                <option value="h2">Heading 2</option>
+                <option value="h3">Heading 3</option>
+                <option value="h4">Heading 4</option>
+                <option value="h5">Heading 5</option>
+                <option value="h6">Heading 6</option>
+              </select>
+
+              {/* Font Family */}
+              <select
+                onChange={handleFontName}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                defaultValue="Arial"
+              >
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Helvetica">Helvetica</option>
+              </select>
+
+              {/* Font Size */}
+              <select
+                onChange={handleFontSize}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                defaultValue="16px"
+              >
+                <option value="8px">8</option>
+                <option value="10px">10</option>
+                <option value="11px">11</option>
+                <option value="12px">12</option>
+                <option value="14px">14</option>
+                <option value="16px">16</option>
+                <option value="18px">18</option>
+                <option value="20px">20</option>
+                <option value="24px">24</option>
+                <option value="28px">28</option>
+                <option value="32px">32</option>
+                <option value="36px">36</option>
+              </select>
+
+              <div className="h-6 w-px bg-gray-300"></div>
+
+              {/* Text Formatting */}
+              <button
+                onClick={handleBold}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 font-bold text-sm"
+                title="Bold"
+              >
+                B
+              </button>
+              <button
+                onClick={handleItalic}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 italic text-sm"
+                title="Italic"
+              >
+                I
+              </button>
+              <button
+                onClick={handleUnderline}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 underline text-sm"
+                title="Underline"
+              >
+                U
+              </button>
+              <button
+                onClick={handleStrikeThrough}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 line-through text-sm"
+                title="Strike"
+              >
+                S
+              </button>
+
+              <div className="h-6 w-px bg-gray-300"></div>
+
+              {/* Colors */}
+              <input
+                type="color"
+                onChange={handleTextColor}
+                className="w-10 h-8 border border-gray-300 rounded cursor-pointer"
+                title="Text Color"
+              />
+              <input
+                type="color"
+                onChange={handleBackgroundColor}
+                className="w-10 h-8 border border-gray-300 rounded cursor-pointer"
+                title="Background Color"
+                defaultValue="#ffffff"
+              />
+
+              <div className="h-6 w-px bg-gray-300"></div>
+
+              {/* Alignment */}
+              <button
+                onClick={() => handleAlign("left")}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                title="Align Left"
+              >
+                ☰
+              </button>
+              <button
+                onClick={() => handleAlign("center")}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                title="Align Center"
+              >
+                ☷
+              </button>
+              <button
+                onClick={() => handleAlign("right")}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                title="Align Right"
+              >
+                ☰
+              </button>
+              <button
+                onClick={() => handleAlign("justify")}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                title="Justify"
+              >
+                ≡
+              </button>
+
+              <div className="h-6 w-px bg-gray-300"></div>
+
+              {/* Lists */}
+              <button
+                onClick={() => handleList("ordered")}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                title="Numbered List"
+              >
+                1.
+              </button>
+              <button
+                onClick={() => handleList("bullet")}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                title="Bullet List"
+              >
+                •
+              </button>
+
+              <div className="h-6 w-px bg-gray-300"></div>
+
+              {/* Indent */}
+              <button
+                onClick={() => handleIndent("out")}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                title="Decrease Indent"
+              >
+                ⇤
+              </button>
+              <button
+                onClick={() => handleIndent("in")}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                title="Increase Indent"
+              >
+                ⇥
+              </button>
+
+              <div className="h-6 w-px bg-gray-300"></div>
+
+              {/* Link */}
+              <button
+                onClick={handleLink}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                title="Insert Link"
+              >
+                🔗
+              </button>
+
+              {/* Clear Formatting */}
+              <button
+                onClick={handleRemoveFormat}
+                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                title="Remove Formatting"
+              >
+                ✕
+              </button>
             </div>
           </div>
 
@@ -881,28 +1104,21 @@ export default function VisualResumeEditor() {
                   }}
                 >
                   <div
-                    ref={(el) => {
-                      if (el) {
-                        const quillInstance = el.querySelector(".ql-editor");
-                        if (quillInstance && !quillRef.current) {
-                          quillRef.current = el;
-                        }
-                      }
+                    ref={contentEditableRef}
+                    contentEditable
+                    suppressContentEditableWarning
+                    onInput={handleContentChange}
+                    className="custom-editor"
+                    style={{
+                      outline: "none",
+                      minHeight: "100%",
+                      fontSize: "16px",
+                      fontFamily: "Arial, Helvetica, sans-serif",
+                      lineHeight: "1.6",
+                      color: "#333",
+                      padding: "0",
                     }}
-                  >
-                    <ReactQuill
-                      value={content}
-                      onChange={handleContentChange}
-                      modules={modules}
-                      theme="snow"
-                      className="quill-no-toolbar"
-                      style={{
-                        border: "none",
-                        fontSize: "16px",
-                        fontFamily: "Arial, Helvetica, sans-serif",
-                      }}
-                    />
-                  </div>
+                  />
                 </div>
               </div>
             </div>

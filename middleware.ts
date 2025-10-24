@@ -9,33 +9,45 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protected routes that require authentication
-  const protectedRoutes = [
-    "/resume/create",
-    "/resume/edit",
-    "/resume/my-resumes",
-  ];
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route)
-  );
+  const pathname = request.nextUrl.pathname;
+
+  // Public routes (accessible without authentication)
+  const publicRoutes = ["/", "/login", "/signup"];
+  const isPublicRoute = publicRoutes.includes(pathname);
 
   // Auth routes (login, signup) - redirect to resume builder if already logged in
   const authRoutes = ["/login", "/signup"];
-  const isAuthRoute = authRoutes.includes(request.nextUrl.pathname);
+  const isAuthRoute = authRoutes.includes(pathname);
 
-  // If user is not logged in and trying to access protected route
-  if (!user && isProtectedRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  // If user is NOT logged in
+  if (!user) {
+    // Only allow access to public routes (/, /login, /signup)
+    if (!isPublicRoute) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
 
-  // If user is logged in and trying to access auth routes, redirect to resume builder
-  if (user && isAuthRoute) {
-    return NextResponse.redirect(new URL("/resume/create", request.url));
+  // If user IS logged in
+  if (user) {
+    // Redirect away from auth routes (login, signup) to dashboard
+    if (isAuthRoute) {
+      return NextResponse.redirect(new URL("/resume/create", request.url));
+    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/resume/:path*", "/login", "/signup"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder
+     * - api routes
+     */
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|api).*)",
+  ],
 };
