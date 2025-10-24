@@ -384,15 +384,34 @@ export default function VisualResumeEditor() {
 
   const handleFontSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    executeCommand("fontSize", "7"); // Base size
-    // Wrap selection in span with custom size
+
+    // Save the current selection
     const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
+    if (!selection || selection.rangeCount === 0) return;
+
+    const range = selection.getRangeAt(0);
+
+    // Check if something is selected
+    if (!range.collapsed) {
+      // Extract the selected content
+      const selectedContent = range.extractContents();
+
+      // Create a span with the font size
       const span = document.createElement("span");
       span.style.fontSize = value;
-      range.surroundContents(span);
+      span.appendChild(selectedContent);
+
+      // Insert the span at the selection
+      range.insertNode(span);
+
+      // Restore selection
+      range.selectNodeContents(span);
+      selection.removeAllRanges();
+      selection.addRange(range);
     }
+
+    contentEditableRef.current?.focus();
+    handleContentChange();
   };
 
   const handleFontName = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -801,28 +820,13 @@ export default function VisualResumeEditor() {
       {/* Main Editor */}
       <main className="px-6 py-8">
         <div className="max-w-7xl mx-auto">
-          {/* Custom Toolbar - Full Functionality */}
+          {/* Custom Toolbar - Simplified */}
           <div className="mb-6 bg-white rounded-lg shadow-lg overflow-visible sticky top-20 z-50">
-            <div className="p-3 flex flex-wrap gap-2 items-center border-b border-gray-200">
-              {/* Heading Selector */}
-              <select
-                onChange={handleHeading}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
-                defaultValue=""
-              >
-                <option value="">Normal</option>
-                <option value="h1">Heading 1</option>
-                <option value="h2">Heading 2</option>
-                <option value="h3">Heading 3</option>
-                <option value="h4">Heading 4</option>
-                <option value="h5">Heading 5</option>
-                <option value="h6">Heading 6</option>
-              </select>
-
+            <div className="p-3 flex flex-wrap gap-2 items-center justify-center border-b border-gray-200">
               {/* Font Family */}
               <select
                 onChange={handleFontName}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm font-medium text-black bg-white"
                 defaultValue="Arial"
               >
                 <option value="Arial">Arial</option>
@@ -833,149 +837,129 @@ export default function VisualResumeEditor() {
                 <option value="Helvetica">Helvetica</option>
               </select>
 
-              {/* Font Size */}
-              <select
-                onChange={handleFontSize}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
-                defaultValue="16px"
-              >
-                <option value="8px">8</option>
-                <option value="10px">10</option>
-                <option value="11px">11</option>
-                <option value="12px">12</option>
-                <option value="14px">14</option>
-                <option value="16px">16</option>
-                <option value="18px">18</option>
-                <option value="20px">20</option>
-                <option value="24px">24</option>
-                <option value="28px">28</option>
-                <option value="32px">32</option>
-                <option value="36px">36</option>
-              </select>
-
-              <div className="h-6 w-px bg-gray-300"></div>
+              <div className="h-6 w-px bg-black"></div>
 
               {/* Text Formatting */}
               <button
                 onClick={handleBold}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 font-bold text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 font-bold text-sm text-black"
                 title="Bold"
               >
                 B
               </button>
               <button
                 onClick={handleItalic}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 italic text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 italic text-sm text-black"
                 title="Italic"
               >
                 I
               </button>
               <button
                 onClick={handleUnderline}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 underline text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 underline text-sm text-black"
                 title="Underline"
               >
                 U
               </button>
               <button
                 onClick={handleStrikeThrough}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 line-through text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 line-through text-sm text-black"
                 title="Strike"
               >
                 S
               </button>
 
-              <div className="h-6 w-px bg-gray-300"></div>
+              <div className="h-6 w-px bg-black"></div>
 
               {/* Colors */}
               <input
                 type="color"
                 onChange={handleTextColor}
-                className="w-10 h-8 border border-gray-300 rounded cursor-pointer"
+                className="w-10 h-8 border-2 border-black rounded cursor-pointer"
                 title="Text Color"
               />
               <input
                 type="color"
                 onChange={handleBackgroundColor}
-                className="w-10 h-8 border border-gray-300 rounded cursor-pointer"
+                className="w-10 h-8 border-2 border-black rounded cursor-pointer"
                 title="Background Color"
                 defaultValue="#ffffff"
               />
 
-              <div className="h-6 w-px bg-gray-300"></div>
+              <div className="h-6 w-px bg-black"></div>
 
               {/* Alignment */}
               <button
                 onClick={() => handleAlign("left")}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 text-sm text-black"
                 title="Align Left"
               >
                 ☰
               </button>
               <button
                 onClick={() => handleAlign("center")}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 text-sm text-black"
                 title="Align Center"
               >
                 ☷
               </button>
               <button
                 onClick={() => handleAlign("right")}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 text-sm text-black"
                 title="Align Right"
               >
                 ☰
               </button>
               <button
                 onClick={() => handleAlign("justify")}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 text-sm text-black"
                 title="Justify"
               >
                 ≡
               </button>
 
-              <div className="h-6 w-px bg-gray-300"></div>
+              <div className="h-6 w-px bg-black"></div>
 
               {/* Lists */}
               <button
                 onClick={() => handleList("ordered")}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 text-sm text-black"
                 title="Numbered List"
               >
                 1.
               </button>
               <button
                 onClick={() => handleList("bullet")}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 text-sm text-black"
                 title="Bullet List"
               >
                 •
               </button>
 
-              <div className="h-6 w-px bg-gray-300"></div>
+              <div className="h-6 w-px bg-black"></div>
 
               {/* Indent */}
               <button
                 onClick={() => handleIndent("out")}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 text-sm text-black"
                 title="Decrease Indent"
               >
                 ⇤
               </button>
               <button
                 onClick={() => handleIndent("in")}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 text-sm text-black"
                 title="Increase Indent"
               >
                 ⇥
               </button>
 
-              <div className="h-6 w-px bg-gray-300"></div>
+              <div className="h-6 w-px bg-black"></div>
 
               {/* Link */}
               <button
                 onClick={handleLink}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 text-sm text-black"
                 title="Insert Link"
               >
                 🔗
@@ -984,7 +968,7 @@ export default function VisualResumeEditor() {
               {/* Clear Formatting */}
               <button
                 onClick={handleRemoveFormat}
-                className="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100 text-sm"
+                className="px-3 py-1.5 border border-black rounded hover:bg-gray-200 text-sm text-black"
                 title="Remove Formatting"
               >
                 ✕
