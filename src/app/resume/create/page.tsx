@@ -250,7 +250,10 @@ export default function ResumeCreatePage() {
                                 PROFESSIONAL SUMMARY
                               </div>
                               <div className="text-[7px] text-gray-700 leading-relaxed">
-                                Engineering Executive with extensive experience in strategic planning, team leadership, and project management. Proven track record of delivering complex engineering projects.
+                                Engineering Executive with extensive experience
+                                in strategic planning, team leadership, and
+                                project management. Proven track record of
+                                delivering complex engineering projects.
                               </div>
                             </div>
 
@@ -291,7 +294,9 @@ export default function ResumeCreatePage() {
                                     Borcelle Technologies
                                   </div>
                                   <div className="text-[6.5px] text-gray-700 leading-tight space-y-0.5">
-                                    <div>• Lead 50+ engineering professionals</div>
+                                    <div>
+                                      • Lead 50+ engineering professionals
+                                    </div>
                                     <div>• 30% efficiency improvement</div>
                                   </div>
                                 </div>
@@ -316,18 +321,20 @@ export default function ResumeCreatePage() {
                                 SKILLS
                               </div>
                               <div className="flex flex-wrap gap-1">
-                                {["AutoCAD", "Python", "Six Sigma", "PMP"].map((skill, idx) => (
-                                  <span
-                                    key={idx}
-                                    className="text-[7px] px-1.5 py-0.5 rounded-full font-semibold"
-                                    style={{
-                                      backgroundColor: `${template.colors.primary}20`,
-                                      color: template.colors.secondary,
-                                    }}
-                                  >
-                                    {skill}
-                                  </span>
-                                ))}
+                                {["AutoCAD", "Python", "Six Sigma", "PMP"].map(
+                                  (skill, idx) => (
+                                    <span
+                                      key={idx}
+                                      className="text-[7px] px-1.5 py-0.5 rounded-full font-semibold"
+                                      style={{
+                                        backgroundColor: `${template.colors.primary}20`,
+                                        color: template.colors.secondary,
+                                      }}
+                                    >
+                                      {skill}
+                                    </span>
+                                  )
+                                )}
                               </div>
                             </div>
                           </div>
@@ -376,7 +383,10 @@ export default function ResumeCreatePage() {
                                 SUMMARY
                               </div>
                               <div className="text-[7px] text-gray-700 leading-relaxed">
-                                Content writer with 3 years of experience crafting compelling and creative content that engages and informs audiences. Versatile writing style with strong research and editing skills.
+                                Content writer with 3 years of experience
+                                crafting compelling and creative content that
+                                engages and informs audiences. Versatile writing
+                                style with strong research and editing skills.
                               </div>
                             </div>
 
@@ -417,8 +427,13 @@ export default function ResumeCreatePage() {
                                     Giggling Platypus Co.
                                   </div>
                                   <div className="text-[6.5px] text-gray-700 leading-tight space-y-0.5">
-                                    <div>• Write articles & blog posts for tech clients</div>
-                                    <div>• Utilize SEO techniques for optimization</div>
+                                    <div>
+                                      • Write articles & blog posts for tech
+                                      clients
+                                    </div>
+                                    <div>
+                                      • Utilize SEO techniques for optimization
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -503,7 +518,10 @@ export default function ResumeCreatePage() {
                                 CAREER SUMMARY
                               </div>
                               <div className="text-[7px] text-gray-700 leading-relaxed">
-                                Solution-oriented problem solver with 5 years of experience building and maintaining software. Highly skilled in communication, collaboration, and technical documentation.
+                                Solution-oriented problem solver with 5 years of
+                                experience building and maintaining software.
+                                Highly skilled in communication, collaboration,
+                                and technical documentation.
                               </div>
                             </div>
 
@@ -533,8 +551,12 @@ export default function ResumeCreatePage() {
                                     Feb 2029 - Present
                                   </div>
                                   <div className="text-[6.5px] text-gray-700 leading-tight space-y-0.5">
-                                    <div>• Build & maintain documentation sites</div>
-                                    <div>• Collaborate with developers on features</div>
+                                    <div>
+                                      • Build & maintain documentation sites
+                                    </div>
+                                    <div>
+                                      • Collaborate with developers on features
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -552,9 +574,11 @@ export default function ResumeCreatePage() {
                                 SKILLS
                               </div>
                               <div className="text-[6.5px] text-gray-700 leading-relaxed">
-                                <span className="font-bold">Technical:</span> Front-end & back-end development
+                                <span className="font-bold">Technical:</span>{" "}
+                                Front-end & back-end development
                                 <br />
-                                <span className="font-bold">Other:</span> Documentation • Client communication
+                                <span className="font-bold">Other:</span>{" "}
+                                Documentation • Client communication
                               </div>
                             </div>
                           </div>
